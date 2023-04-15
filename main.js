@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 const { Howl } = require('howler')
+const sound = require('sound-play')
 
 function createWindow() {
   // 创建浏览器窗口
@@ -38,21 +39,15 @@ app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
 })
 
-let currentHowl = null
+let currentAudio = null
 
 ipcMain.on('play-song', (event, songPath) => {
-  if (currentHowl) {
-    console.log('ready to pause!')
-    currentHowl.pause()
+  if (currentAudio) {
+    currentAudio.pause()
+    console.log('currentAudio paused')
   }
-
-  const howl = new Howl({
-    src: [path.resolve(songPath)],
-    html5: true,
-    volume: 1,
-  })
-
-  console.log(songPath)
-  howl.play()
-  currentHowl = howl
+  const audio = new Audio(songPath)
+  audio.play()
+  currentAudio = audio
+  // sound.play(songPath)
 })
