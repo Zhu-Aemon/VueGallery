@@ -4,6 +4,7 @@ import router from './router'
 import { store } from './store'
 
 import './assets/main.css'
+import 'tailwindcss/tailwind.css';
 
 const app = createApp(App)
 

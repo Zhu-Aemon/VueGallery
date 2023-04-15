@@ -1,7 +1,9 @@
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, protocol } = require('electron')
 const path = require('path')
-const { Howl } = require('howler')
-const sound = require('sound-play')
+
+protocol.registerSchemesAsPrivileged([
+  { scheme: 'app', privileges: {secure:true, standard: true } }
+])
 
 function createWindow() {
   // 创建浏览器窗口
@@ -10,6 +12,9 @@ function createWindow() {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
+      webSecurity: false,
+      nodeIntegration: true,
+      contextIsolation: false
     },
   })
 
@@ -37,17 +42,4 @@ app.whenReady().then(() => {
 // 任务栏上的图标来说，应当保持活跃状态，直到用户使用 Cmd + Q 退出。
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
-})
-
-let currentAudio = null
-
-ipcMain.on('play-song', (event, songPath) => {
-  if (currentAudio) {
-    currentAudio.pause()
-    console.log('currentAudio paused')
-  }
-  const audio = new Audio(songPath)
-  audio.play()
-  currentAudio = audio
-  // sound.play(songPath)
 })
