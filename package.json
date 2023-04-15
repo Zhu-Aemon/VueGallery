@@ -17,6 +17,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "latest-3",
     "howler": "^2.2.3",
+    "music-metadata-browser": "^2.5.9",
     "sound-play": "^1.1.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
