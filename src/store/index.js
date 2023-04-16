@@ -1,4 +1,3 @@
-// store.js or store/index.js
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 
@@ -7,6 +6,7 @@ export const store = createStore({
     showWelcomePage: true,
     folderName: '',
     songs: [],
+    playing: false,
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -15,6 +15,9 @@ export const store = createStore({
     setSongs(state, songs) {
       state.songs = songs
     },
+    togglePlayState(state) {
+      state.playing = !state.playing
+    }
   },
   actions: {
     // your actions here

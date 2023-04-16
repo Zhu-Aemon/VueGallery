@@ -9,7 +9,8 @@ function createWindow() {
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
     width: 1440,
-    height: 850,
+    height: 910,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       webSecurity: false,
@@ -17,6 +18,8 @@ function createWindow() {
       contextIsolation: false
     },
   })
+
+  mainWindow.setMenuBarVisibility(false)
 
   // 加载 index.html
   mainWindow.loadURL('http://127.0.0.1:5173') // 此处跟electron官网路径不同，需要注意
