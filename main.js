@@ -2,7 +2,7 @@ const { app, BrowserWindow, protocol } = require('electron')
 const path = require('path')
 
 protocol.registerSchemesAsPrivileged([
-  { scheme: 'app', privileges: {secure:true, standard: true } }
+  { scheme: 'app', privileges: { secure: true, standard: true } },
 ])
 
 function createWindow() {
@@ -15,7 +15,7 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       webSecurity: false,
       nodeIntegration: true,
-      contextIsolation: false
+      contextIsolation: false,
     },
   })
 
