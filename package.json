@@ -17,8 +17,12 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/vue-fontawesome": "latest-3",
     "howler": "^2.2.3",
+    "jsmediatags": "^3.9.7",
+    "music-metadata": "^8.1.4",
     "music-metadata-browser": "^2.5.9",
     "sound-play": "^1.1.0",
+    "vite-plugin-commonjs": "^0.6.2",
+    "vite-plugin-legacy": "^2.1.0",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6",
     "vuex": "next",
@@ -34,7 +38,6 @@
     "prettier": "2.8.7",
     "tailwindcss": "^3.3.1",
     "vite": "^4.1.4",
-    "vue-slider-component": "^3.2.24",
     "wait-on": "^7.0.1"
   }
 }

@@ -9,6 +9,9 @@ const store = createStore({
     playing: false,
     currentSong: '',
     currentDuration: 180,
+    currentSongName: '',
+    currentSongAlbum: '',
+    currentSongArtist: '',
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -36,6 +39,12 @@ const store = createStore({
     startPlay(state) {
       state.playing = true
     },
+    setCurrentMetadata(state, { name, album, artist }) {
+      state.currentSongName = name
+      state.currentSongAlbum = album
+      state.currentSongArtist = artist
+      console.log('commited data:', name, album, artist)
+    }
   },
   actions: {
     // your actions here

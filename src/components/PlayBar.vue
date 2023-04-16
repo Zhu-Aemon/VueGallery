@@ -6,8 +6,17 @@
     <div
       class="items-center justify-center hidden mr-auto text-gray-500 dark:text-gray-400 md:flex"
     >
-      <img alt="Cover" class="h-8 mr-3 rounded" src="" />
-      <span class="text-sm">Gallery Crash Course</span>
+      <img id='cover' alt="Cover" class="h-16 mr-3 rounded-xl" />
+      <li class='list-none'>
+        <div class="text-gray-600 dark:text-gray-400">
+          <div class="text-base font-normal">
+            <span class="font-medium text-gray-900 dark:text-white">{{ title }}</span>
+          </div>
+          <div class="text-sm font-normal">
+            {{ artist }}
+          </div>
+        </div>
+      </li>
     </div>
     <!-- 5 middle buttons-->
     <div class="flex items-center w-full">
@@ -301,27 +310,50 @@
 <script setup>
 import { useStore } from 'vuex'
 import { computed, watch, ref } from 'vue'
+import readMetadataAndSetCover from '../utils/Metadata'
 
 const store = useStore()
 
 const duration = computed(() => store.state.currentDuration)
 const playing = computed(() => store.state.playing)
+const title = computed(() => store.state.currentSongName)
+const album = computed(() => store.state.currentSongAlbum)
+const artist = computed(() => store.state.currentSongArtist)
 let displayTime = ref(formatTime(duration.value))
 let progressTime = ref(0)
 let intervalId = null
 let currentSong = computed(() => store.state.currentSong)
 let progressTimeDisplayed = ref(formatTime(progressTime))
 
+watch(artist, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    console.log(newValue)
+  }
+})
+
+watch(title, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    console.log(newValue)
+  }
+})
+
+watch(album, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    console.log(newValue)
+  }
+})
+
 watch(currentSong, (newValue, oldValue) => {
   if (newValue !== oldValue) {
     progressTime.value = 0
+    readMetadataAndSetCover(newValue.path)
     if (intervalId !== null) {
       clearInterval(intervalId)
     }
     if (playing.value === true) {
       intervalId = setInterval(() => {
         progressTime.value += 1
-        console.log(progressTime.value)
+        // console.log(progressTime.value)
       }, 1000)
     }
   }
@@ -329,16 +361,16 @@ watch(currentSong, (newValue, oldValue) => {
 
 watch(playing, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    console.log('state changed to', newValue)
+    // console.log('state changed to', newValue)
     if (newValue === false) {
-      console.log('clear interval!')
+      // console.log('clear interval!')
       if (intervalId !== null) {
         clearInterval(intervalId)
       }
     } else {
       intervalId = setInterval(() => {
         progressTime.value += 1
-        console.log(progressTime.value)
+        // console.log(progressTime.value)
       }, 1000)
     }
   }
@@ -353,13 +385,16 @@ watch(duration, (newValue, oldValue) => {
 watch(progressTime, (newValue, oldValue) => {
   if (newValue !== oldValue) {
     progressTimeDisplayed.value = formatTime(newValue)
-    console.log(
-      Math.floor((Number(progressTime.value) / Number(duration.value)) * 100)
-    )
+    // console.log(
+    //   Math.floor((Number(progressTime.value) / Number(duration.value)) * 100)
+    // )
   }
 })
 
 function formatTime(seconds) {
+  if (seconds === 0) {
+    return '0:00'
+  }
   // 忽略小数点后的数字并计算分钟数
   const minutes = Math.floor(seconds / 60)
 
