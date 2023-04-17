@@ -205,7 +205,7 @@
     <!-- 4 right buttons-->
     <div class="items-center justify-center hidden ml-auto md:flex">
       <!-- View PlayList Button-->
-      <button
+      <button v-if='false'
         class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
         type="button"
       >
@@ -225,7 +225,7 @@
         <span class="sr-only">View playlist</span>
       </button>
       <!-- ??Show Caption-->
-      <button
+      <button v-if='false'
         class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
         data-tooltip-target="tooltip-captions"
         type="button"
@@ -253,7 +253,7 @@
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
       <!-- ??expand Button-->
-      <button
+      <button v-if='false'
         class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
         data-tooltip-target="tooltip-expand"
         type="button"
@@ -281,7 +281,7 @@
         <div class="tooltip-arrow" data-popper-arrow></div>
       </div>
       <!--Adjust Volume-->
-      <button
+      <button v-if='false'
         class="p-2.5 group rounded-full hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
         data-popover-target="sound-slider"
         data-popover-trigger="click"
@@ -308,12 +308,12 @@
         role="tooltip"
         class="absolute z-10 invisible inline-block w-auto text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800"
       >
-        <vue-slider
-          v-model="volume"
-          :min="0"
-          :max="100"
-          direction="btt"
-        ></vue-slider>
+<!--        <vue-slider-->
+<!--          v-model="volume"-->
+<!--          :min="0"-->
+<!--          :max="100"-->
+<!--          direction="btt"-->
+<!--        ></vue-slider>-->
         <div data-popper-arrow></div>
       </div>
     </div>
@@ -322,11 +322,10 @@
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed, watch, ref } from 'vue'
+import { computed, watch, ref, onMounted } from 'vue'
 import readMetadataAndSetCover from '../utils/metadata'
 import formatTime from '../utils/timeParse'
-// import VueSlider from 'vue-slider-component'
-// import 'vue-slider-component/theme/default.css'
+import EventBus from '@/utils/eventBus'
 
 const store = useStore()
 
@@ -447,9 +446,33 @@ const togglePlay = () => {
 }
 
 const playNext = () => {
-  const tobeIndexed = currentSong.value
-  const list = currentPlayList.value
-  const index = list.indexOf(tobeIndexed) || 0
-  store.commit('setCurrentSong', list[index + 1])
+  if (shuffleState.value === 'loop') {
+    const tobeIndexed = currentSong.value
+    const list = currentPlayList.value
+    const index = list.indexOf(tobeIndexed) || 0
+    store.commit('setCurrentSong', list[index + 1])
+  } else if (shuffleState.value === 'one') {
+    const tobeIndexed = currentSong.value
+    const list = currentPlayList.value
+    const index = list.indexOf(tobeIndexed) || 0
+    store.commit('setCurrentSong', list[index])
+  } else {
+    const tobeIndexed = currentSong.value
+    const list = currentPlayList.value
+    const index = list.indexOf(tobeIndexed) || 0
+    store.commit('setCurrentSong', list[index + 1])
+  }
+
+}
+
+onMounted(() => {
+  EventBus.on('song-end', songEnd)
+})
+
+const songEnd = () => {
+  if (intervalId !== null) {
+    clearInterval(intervalId)
+  }
+  playNext()
 }
 </script>

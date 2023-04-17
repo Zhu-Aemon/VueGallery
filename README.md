@@ -1,29 +1,31 @@
-# gallery
+# Gallery
 
-This template should help get you started developing with Vue 3 in Vite.
+Gallery is a designed to be a music file manager for whoever possesses a passion for managing music locally in their PC.
 
-## Recommended IDE Setup
+You are count as a target of this Gallery program if you:
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+- have a passion for music quality like Hi-Res or Lossless
+- prefer to keep everything in their PC in a rather nice way
+- want to keep everything private and secure
 
-## Customize configuration
+Gallery runs completely locally and requires no connection with any remote server. Also, the program won't share any data with anyone besides you. Your data won't even be sent to Google Analytics to boost your experience. Enerything is perfectly secure.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Gallery is built using Vue.js, Vite and Electron, which is super portable and light. We also built everything using card UI design, which offers the best user experience. We have different versions that fits different platforms such as macOS and Windows.
 
-## Project Setup
+Gallery offers strong history data lookup and analysis function. Nobody can know you better than yourself.
 
-```sh
-npm install
-```
+ToDo List:
 
-### Compile and Hot-Reload for Development
+Near-future:
 
-```sh
-npm run dev
-```
+- implement play continuation
+- fix progressbar bug
+- Implement search function and search page
+- Implement shuffle and loop function
 
-### Compile and Minify for Production
+Mid-term ToDo List:
 
-```sh
-npm run build
-```
+- User preference Analysis
+- History data lookup
+- Artist Gallery
+- Album Gallery

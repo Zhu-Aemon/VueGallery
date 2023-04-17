@@ -1,10 +1,12 @@
-import { computed, watch } from 'vue'
+import { computed, watch, defineEmits } from 'vue'
 import store from '@/store'
 import { Howl } from 'howler'
+import EventBus from '@/utils/eventBus'
 
 const playing = computed(() => store.state.playing)
 const currentSong = computed(() => store.state.currentSong)
 const volume = computed(() => store.state.volume)
+const emit = defineEmits(['song-end'])
 let currentHowl = null
 
 watch(playing, (newValue, oldValue) => {
@@ -42,6 +44,9 @@ watch(currentSong, (newValue, oldValue) => {
       onerror: (error) => {
         console.error(error)
       },
+      onend: () => {
+        EventBus.emit('song-end')
+      }
     })
     // console.log(howl)
     if (currentHowl && currentHowl.playing()) {
