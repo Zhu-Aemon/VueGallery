@@ -79,8 +79,6 @@ Gallery 提供了强大的历史数据查询和分析功能。没有人比你自
 
 <h1 align='center'>⚡️<i>Stay awesome!</i>⚡️</h1>
 
-----
-
 <p align="center">
         <img src="https://raw.githubusercontent.com/mayhemantt/mayhemantt/Update/svg/Bottom.svg" alt="Github Stats" />
 </p>
