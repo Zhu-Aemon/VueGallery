@@ -3,7 +3,8 @@ import store from '@/store'
 
 async function readMetadataAndSetCover(filePath) {
   try {
-    const metadata = await mm.fetchFromUrl(filePath);
+    const url = `file://${filePath}`
+    const metadata = await mm.fetchFromUrl(url);
     if (metadata.common.picture && metadata.common.picture.length > 0) {
       const picture = metadata.common.picture[0];
       const base64String = picture.data.reduce((data, byte) => data + String.fromCharCode(byte), '');
@@ -22,6 +23,23 @@ async function readMetadataAndSetCover(filePath) {
     }
   } catch (error) {
     console.error('Error in readMetadataAndSetCover:', error);
+  }
+}
+
+export async function getMetadata(filePath) {
+  const url = `file://${filePath}`
+  // console.log(url)
+  try {
+    const metadata = await mm.fetchFromUrl(url)
+    // console.log(metadata)
+    const title = metadata.common.title
+    const artist = metadata.common.artist
+    // console.log('! artist', artist)
+    const album = metadata.common.album
+    const duration = metadata.format.duration
+    return {title, artist, album, duration}
+  } catch (error) {
+    console.error(error)
   }
 }
 

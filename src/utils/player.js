@@ -32,8 +32,10 @@ watch(currentSong, (newValue, oldValue) => {
   // console.log('old value is ', oldValue)
   // console.log('currentSong changed to', newValue)
   if (newValue !== oldValue) {
+    const url = `file://${newValue.path}`
+    // console.log(url)
     const howl = new Howl({
-      src: [newValue.path],
+      src: [url],
       html5: true,
       volume: 1,
       onerror: (error) => {

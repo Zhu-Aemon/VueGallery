@@ -25,8 +25,9 @@ const store = createStore({
     },
     setCurrentSong(state, currentSong) {
       state.currentSong = currentSong
+      const url = `file://${currentSong.path}`
       const howl = new Howl({
-        src: [currentSong.path],
+        src: [url],
         onload: () => {
           state.currentDuration = howl.duration()
           // console.log(state.currentDuration)
@@ -43,7 +44,7 @@ const store = createStore({
       state.currentSongName = name
       state.currentSongAlbum = album
       state.currentSongArtist = artist
-      console.log('commited data:', name, album, artist)
+      // console.log('commited data:', name, album, artist)
     }
   },
   actions: {

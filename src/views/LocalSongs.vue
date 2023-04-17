@@ -29,12 +29,12 @@
               :key="index"
               @dblclick="songDblClicked(song)"
             >
-              {{ song.name }}
+              {{ song.title }}
             </th>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">Artist</td>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">Album</td>
+            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ song.artist }}</td>
+            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ song.album }}</td>
             <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-              Duration
+                {{ formatTime(song.duration) }}
             </td>
           </tr>
         </tbody>
@@ -45,7 +45,7 @@
 
 <script setup>
 import { useStore } from 'vuex'
-import { Howl } from 'howler'
+import formatTime from '../utils/timeParse'
 
 const store = useStore()
 const songs = store.state.songs
