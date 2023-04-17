@@ -34,30 +34,26 @@ const pauseMusic = () => {
 watch(currentSong, (newValue, oldValue) => {
   // console.log('old value is ', oldValue)
   // console.log('currentSong changed to', newValue)
-  if (newValue !== oldValue) {
-    const url = `file://${newValue.path}`
-    // console.log(url)
-    const howl = new Howl({
-      src: [url],
-      html5: true,
-      volume: volume.value / 100,
-      onerror: (error) => {
-        console.error(error)
-      },
-      onend: () => {
-        EventBus.emit('song-end')
-      }
-    })
-    // console.log(howl)
-    if (currentHowl && currentHowl.playing()) {
-      // console.log('pause music and play', newValue)
-      pauseMusic()
-      currentHowl = howl
-      playMusic()
-    } else {
-      // console.log('play new music', newValue)
-      currentHowl = howl
-      playMusic()
+  const url = `file://${newValue.path}`
+  const howl = new Howl({
+    src: [url],
+    html5: true,
+    volume: volume.value / 100,
+    onerror: (error) => {
+      console.error(error)
+    },
+    onend: () => {
+      EventBus.emit('song-end')
     }
+  })
+  if (currentHowl && currentHowl.playing()) {
+    // console.log('pause music and play', newValue)
+    pauseMusic()
+    currentHowl = howl
+    playMusic()
+  } else {
+    // console.log('play new music', newValue)
+    currentHowl = howl
+    playMusic()
   }
 })
