@@ -5,16 +5,16 @@
       <table class="w-full text-gray-500 dark:text-gray-400">
         <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
           <tr>
-            <th class="w-32 p-3 text-sm font-semibold tracking-wide text-left">
+            <th class="w-2/5 p-3 text-sm font-semibold tracking-wide text-left">
               Song
             </th>
-            <th class="p-3 text-sm font-semibold tracking-wide text-left">
+            <th class="w-1/5 p-3 text-sm font-semibold tracking-wide text-left">
               Artist
             </th>
-            <th class="p-3 text-sm font-semibold tracking-wide text-left">
+            <th class="w-1/5 p-3 text-sm font-semibold tracking-wide text-left">
               Album
             </th>
-            <th class="p-3 text-sm font-semibold tracking-wide text-left">
+            <th class="w-1/5 p-3 text-sm font-semibold tracking-wide text-left">
               Duration
             </th>
           </tr>
@@ -25,16 +25,20 @@
             v-for="(song, index) in songs"
           >
             <th
-              class="w-32 p-3 text-sm text-gray-900 whitespace-nowrap text-left font-medium cursor-pointer select-none"
+              class="p-3 text-sm text-gray-900 whitespace-nowrap text-left font-medium cursor-pointer select-none"
               :key="index"
               @dblclick="songDblClicked(song)"
             >
               {{ song.title }}
             </th>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ song.artist }}</td>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">{{ song.album }}</td>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap">
-                {{ formatTime(song.duration) }}
+            <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none">
+              {{ song.artist }}
+            </td>
+            <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none">
+              {{ song.album }}
+            </td>
+            <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none">
+              {{ formatTime(song.duration) }}
             </td>
           </tr>
         </tbody>

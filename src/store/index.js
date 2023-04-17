@@ -12,6 +12,8 @@ const store = createStore({
     currentSongName: '',
     currentSongAlbum: '',
     currentSongArtist: '',
+    shuffle: 'loop',
+    volume: 100,
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -28,6 +30,8 @@ const store = createStore({
       const url = `file://${currentSong.path}`
       const howl = new Howl({
         src: [url],
+        html5: true,
+        volume: state.volume / 100,
         onload: () => {
           state.currentDuration = howl.duration()
           // console.log(state.currentDuration)
@@ -45,6 +49,12 @@ const store = createStore({
       state.currentSongAlbum = album
       state.currentSongArtist = artist
       // console.log('commited data:', name, album, artist)
+    },
+    setShuffle(state, shuffle) {
+      state.shuffle = shuffle
+    },
+    setVolume(state, volume) {
+      state.volume = volume
     }
   },
   actions: {

@@ -6,11 +6,18 @@
     <div
       class="items-center justify-center hidden mr-auto text-gray-500 dark:text-gray-400 md:flex"
     >
-      <img id='cover' alt="Cover" class="h-16 mr-3 rounded-xl" />
-      <li class='list-none'>
+      <img
+        id="cover"
+        alt="Cover"
+        class="h-16 mr-3 rounded-xl"
+        src="https://flowbite.com/docs/images/logo.svg"
+      />
+      <li class="list-none">
         <div class="text-gray-600 dark:text-gray-400">
           <div class="text-base font-normal">
-            <span class="font-medium text-gray-900 dark:text-white">{{ title }}</span>
+            <span class="font-medium text-gray-900 dark:text-white">{{
+              title
+            }}</span>
           </div>
           <div class="text-sm font-normal">
             {{ artist }}
@@ -95,8 +102,16 @@
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
+                v-if="playing"
                 clip-rule="evenodd"
                 d="M0.625 1.375C0.625 1.02982 0.904823 0.75 1.25 0.75H2.5C2.84518 0.75 3.125 1.02982 3.125 1.375V12.625C3.125 12.9702 2.84518 13.25 2.5 13.25H1.25C1.08424 13.25 0.925268 13.1842 0.808058 13.0669C0.690848 12.9497 0.625 12.7908 0.625 12.625L0.625 1.375ZM6.875 1.375C6.875 1.02982 7.15482 0.75 7.5 0.75H8.75C8.91576 0.75 9.07473 0.815848 9.19194 0.933058C9.30915 1.05027 9.375 1.20924 9.375 1.375L9.375 12.625C9.375 12.9702 9.09518 13.25 8.75 13.25H7.5C7.15482 13.25 6.875 12.9702 6.875 12.625V1.375Z"
+                fill="currentColor"
+                fill-rule="evenodd"
+              />
+              <path
+                v-else
+                d="M1 1.375L11 7L1 12.625Z"
+                clip-rule="evenodd"
                 fill="currentColor"
                 fill-rule="evenodd"
               />
@@ -173,7 +188,7 @@
         <!-- ProgressBar Component-->
         <div class="flex items-center justify-between space-x-2">
           <span class="text-sm font-medium text-gray-500 dark:text-gray-400">{{
-            progressTimeDisplayed
+            progressTimeDisplayed === 'NaN:NaN' ? '0:00' : progressTimeDisplayed
           }}</span>
           <div class="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-800">
             <div
@@ -192,7 +207,6 @@
       <!-- View PlayList Button-->
       <button
         class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
-        data-tooltip-target="tooltip-playlist"
         type="button"
       >
         <svg
@@ -210,14 +224,6 @@
         </svg>
         <span class="sr-only">View playlist</span>
       </button>
-      <div
-        id="tooltip-playlist"
-        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
-        role="tooltip"
-      >
-        View playlist
-        <div class="tooltip-arrow" data-popper-arrow></div>
-      </div>
       <!-- ??Show Caption-->
       <button
         class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
@@ -277,7 +283,8 @@
       <!--Adjust Volume-->
       <button
         class="p-2.5 group rounded-full hover:bg-gray-100 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
-        data-tooltip-target="tooltip-volume"
+        data-popover-target="sound-slider"
+        data-popover-trigger="click"
         type="button"
       >
         <svg
@@ -296,12 +303,18 @@
         <span class="sr-only">Adjust volume</span>
       </button>
       <div
-        id="tooltip-volume"
-        class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
+        data-popover
+        id="sound-slider"
         role="tooltip"
+        class="absolute z-10 invisible inline-block w-auto text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800"
       >
-        Adjust volume
-        <div class="tooltip-arrow" data-popper-arrow></div>
+        <vue-slider
+          v-model="volume"
+          :min="0"
+          :max="100"
+          direction="btt"
+        ></vue-slider>
+        <div data-popper-arrow></div>
       </div>
     </div>
   </div>
@@ -310,8 +323,10 @@
 <script setup>
 import { useStore } from 'vuex'
 import { computed, watch, ref } from 'vue'
-import readMetadataAndSetCover from '../utils/Metadata'
+import readMetadataAndSetCover from '../utils/metadata'
 import formatTime from '../utils/timeParse'
+// import VueSlider from 'vue-slider-component'
+// import 'vue-slider-component/theme/default.css'
 
 const store = useStore()
 
@@ -320,11 +335,14 @@ const playing = computed(() => store.state.playing)
 const title = computed(() => store.state.currentSongName)
 const album = computed(() => store.state.currentSongAlbum)
 const artist = computed(() => store.state.currentSongArtist)
+const shuffleState = computed(() => store.state.shuffle)
+const volume = computed(() => store.state.volume)
 let displayTime = ref(formatTime(duration.value))
 let progressTime = ref(0)
 let intervalId = null
 let currentSong = computed(() => store.state.currentSong)
 let progressTimeDisplayed = ref(formatTime(progressTime))
+let currentPlayList = computed(() => store.state.songs)
 
 watch(artist, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -401,15 +419,37 @@ const progressBarStyle = computed(() => {
   }
 })
 
-const shuffleMusic = () => {}
+const shuffleMusic = () => {
+  if (shuffleState.value !== 'shuffle') {
+    store.commit('setShuffle', 'shuffle')
+  } else {
+    store.commit('setShuffle', 'loop')
+  }
+}
 
-const playPrevious = () => {}
+const loopSong = () => {
+  if (shuffleState.value !== 'one') {
+    store.commit('setShuffle', 'one')
+  } else {
+    store.commit('setShuffle', 'loop')
+  }
+}
+
+const playPrevious = () => {
+  const tobeIndexed = currentSong.value
+  const list = currentPlayList.value
+  const index = list.indexOf(tobeIndexed) || 0
+  store.commit('setCurrentSong', list[index - 1])
+}
 
 const togglePlay = () => {
   store.commit('togglePlayState')
 }
 
-const playNext = () => {}
-
-const loopSong = () => {}
+const playNext = () => {
+  const tobeIndexed = currentSong.value
+  const list = currentPlayList.value
+  const index = list.indexOf(tobeIndexed) || 0
+  store.commit('setCurrentSong', list[index + 1])
+}
 </script>

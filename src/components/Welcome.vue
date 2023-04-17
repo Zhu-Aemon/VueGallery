@@ -440,7 +440,7 @@
 <script setup>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { getMetadata } from "../utils/Metadata";
+import { getMetadata } from '../utils/metadata'
 
 const store = useStore()
 const router = useRouter()
@@ -453,16 +453,16 @@ const loadSongs = async (event) => {
 }
 
 const getSongs = async (files) => {
-    const audioFiles = []
-    for (const file of files) {
-        if (file.type.startsWith('audio')) {
-            const metadata = await getMetadata(file.path)
-            const { name, path } = file
-            const { title, artist, album, duration } = metadata || {}
-            audioFiles.push({ name, path, artist, title, album, duration })
-        }
+  const audioFiles = []
+  for (const file of files) {
+    if (file.type.startsWith('audio')) {
+      const metadata = await getMetadata(file.path)
+      const { name, path } = file
+      const { title, artist, album, duration } = metadata || {}
+      audioFiles.push({ name, path, artist, title, album, duration })
     }
-    return audioFiles
+  }
+  return audioFiles
 }
 
 const displaySongs = (songs) => {

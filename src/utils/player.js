@@ -4,6 +4,7 @@ import { Howl } from 'howler'
 
 const playing = computed(() => store.state.playing)
 const currentSong = computed(() => store.state.currentSong)
+const volume = computed(() => store.state.volume)
 let currentHowl = null
 
 watch(playing, (newValue, oldValue) => {
@@ -37,7 +38,7 @@ watch(currentSong, (newValue, oldValue) => {
     const howl = new Howl({
       src: [url],
       html5: true,
-      volume: 1,
+      volume: volume.value / 100,
       onerror: (error) => {
         console.error(error)
       },
