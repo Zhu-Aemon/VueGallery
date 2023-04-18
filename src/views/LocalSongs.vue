@@ -26,7 +26,7 @@
             v-for="(song, index) in songs"
           >
             <th
-              class="p-3 text-sm text-gray-900 whitespace-nowrap text-left font-medium select-none"
+              class="p-3 text-sm text-gray-900 text-left font-medium select-none"
               :key="index"
               @dblclick="songDblClicked(song)"
               v-if="
@@ -39,7 +39,7 @@
               <span class="cursor-pointer">{{ song.title }}</span>
             </th>
             <td
-              class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
+              class="p-3 text-sm text-gray-700 select-none"
               v-if="
                 song &&
                 (song.title.includes(searchQuery) ||
@@ -49,12 +49,22 @@
             >
               <span
                 class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
-                @click="showArtist(song.artist)"
-                >{{ song.artist }}</span
+                v-if='song.artist.includes("/")'
+                v-for="(artist, index) in processedArtists(song)"
+                @click='showArtist(artist)'
               >
+              {{ artist }} /
+            </span>
+              <span
+                class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
+                v-else
+                @click='showArtist(song.artist)'
+              >
+              {{ song.artist }}
+            </span>
             </td>
             <td
-              class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
+              class="p-3 text-sm text-gray-700 select-none"
               v-if="
                 song &&
                 (song.title.includes(searchQuery) ||
@@ -69,7 +79,7 @@
               >
             </td>
             <td
-              class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
+              class="p-3 text-sm text-gray-700 select-none"
               v-if="
                 song &&
                 (song.title.includes(searchQuery) ||
@@ -119,4 +129,11 @@ const showAlbum = (album) => {
     },
   })
 }
+
+const processedArtists = (song) => {
+  if (song.artist.includes('/')) {
+    return song.artist.split('/');
+  }
+  return [song.artist];
+};
 </script>

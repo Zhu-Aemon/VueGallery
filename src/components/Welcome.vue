@@ -427,7 +427,7 @@ const loadSongs = async (event) => {
 const getSongs = async (files) => {
   const audioFiles = []
   for (const file of files) {
-    if (file.type.startsWith('audio')) {
+    if (file.type.startsWith('audio') && !file.path.includes('#')) {
       const metadata = await getMetadata(file.path)
       const { name, path } = file
       const { title, artist, album, duration } = metadata || {}
@@ -441,5 +441,4 @@ const displaySongs = (songs) => {
   store.commit('setSongs', songs)
   router.push({ name: 'songList' })
 }
-
 </script>

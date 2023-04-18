@@ -25,8 +25,8 @@
     </div>
   </div>
   <h1 class="text-2xl font-bold ml-20">单曲</h1>
-  <div class="rounded-lg shadow ml-20 mr-20 mt-6">
-    <table class="w-full text-gray-500 dark:text-gray-400 rounded-lg">
+  <div class="rounded-lg shadow ml-20 mr-20 mt-6 mb-28">
+    <table class="w-full text-gray-500 dark:text-gray-400">
       <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
         <tr>
           <th class="w-2/5 p-3 text-sm font-semibold tracking-wide text-left">
@@ -60,9 +60,21 @@
             class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
             v-if="song && song.artist.includes(route.query.artist)"
           >
-            <span class="lg:hover:text-blue-600 lg:hover:underline">{{
-              song.artist
-            }}</span>
+            <span
+              class="lg:hover:text-blue-600 lg:hover:underline"
+              v-if='song.artist.includes("/")'
+              v-for="(artist, index) in processedArtists(song)"
+              @click='showArtist(artist)'
+            >
+              {{ artist }} /
+            </span>
+            <span
+              class="lg:hover:text-blue-600 lg:hover:underline"
+              v-else
+              @click='showArtist(song.artist)'
+            >
+              {{ song.artist }}
+            </span>
           </td>
           <td
             class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
@@ -101,6 +113,13 @@ let artistData = ref({})
 let artistDetail = ref({})
 let artistId = ref(0)
 const songs = computed(() => store.state.songs)
+
+const processedArtists = (song) => {
+  if (song.artist.includes('/')) {
+    return song.artist.split('/');
+  }
+  return [song.artist];
+};
 
 onMounted(() => {
   const artist = route.query.artist
@@ -142,6 +161,20 @@ const showAlbum = (album) => {
     name: 'albumPage',
     query: {
       album: album,
+    },
+  })
+}
+
+const songDblClicked = (song) => {
+  store.commit('setCurrentSong', song)
+  // console.log('set currentSong as ', song.name)
+}
+
+const showArtist = (artist) => {
+  router.push({
+    name: 'artistPage',
+    query: {
+      artist: artist,
     },
   })
 }
