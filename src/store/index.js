@@ -14,6 +14,7 @@ const store = createStore({
     currentSongArtist: '',
     shuffle: 'loop',
     volume: 100,
+    searchContent: '',
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -55,6 +56,9 @@ const store = createStore({
     },
     setVolume(state, volume) {
       state.volume = volume
+    },
+    setSearchContent(state, searchContent) {
+      state.searchContent = searchContent
     }
   },
   actions: {

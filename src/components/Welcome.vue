@@ -237,8 +237,8 @@
           <div
             id="Development Modal"
             aria-hidden="true"
-            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
-            tabindex="-1"
+            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)]"
+            tabindex="0"
           >
             <div class="relative w-full max-w-2xl max-h-full">
               <!-- Modal content -->
@@ -254,7 +254,7 @@
                   </h3>
                   <button
                     class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-hide="defaultModal"
+                    data-modal-hide="Development Modal"
                     type="button"
                   >
                     <svg
@@ -291,7 +291,7 @@
                         <img
                           class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
                           src="src/assets/TZ_Avatar.jpg"
-                          alt="Jese Leos image"
+                          alt="TZ"
                         />
                         <div class="text-gray-600 dark:text-gray-400">
                           <div class="text-base font-normal">
@@ -303,32 +303,6 @@
                           </div>
                           <div class="text-sm font-normal">
                             Application Performance is compromised
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <img
-                          class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                          src="src/assets/LSD_Avatar.jpg"
-                          alt="Bonnie Green image"
-                        />
-                        <div>
-                          <div
-                            class="text-base font-normal text-gray-600 dark:text-gray-400"
-                          >
-                            <span
-                              class="font-medium text-gray-900 dark:text-white"
-                              >李尚达</span
-                            >
-                            started GUI design using Qt Designer
-                          </div>
-                          <div class="text-sm font-normal">
-                            QSS is significantly inferior in functionality as
-                            compared to CSS
                           </div>
                         </div>
                       </a>
@@ -395,32 +369,11 @@
                               class="font-medium text-gray-900 dark:text-white"
                               >王天柱</span
                             >
-                            started to learn front-end development
-                          </div>
-                          <div class="text-sm font-normal">
-                            Basic HTML+CSS+Javascript and Vue.js framework and
-                            Electron as GUI
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <img
-                          class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                          src="src/assets/TZ_Avatar.jpg"
-                          alt="Jese Leos image"
-                        />
-                        <div class="text-gray-600 dark:text-gray-400">
-                          <div class="text-base font-normal">
-                            <span
-                              class="font-medium text-gray-900 dark:text-white"
-                              >王天柱</span
-                            >
                             started to refactor project using Vue.js and
                             Electron
+                          </div>
+                          <div class="text-sm font-normal">
+                            Use Tailwindcss to build amazing CSS
                           </div>
                         </div>
                       </a>

@@ -1,15 +1,26 @@
 const { app, BrowserWindow, protocol } = require('electron')
 const path = require('path')
+const os = require('os')
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
 ])
 
+let width, height
+
+if (os.platform() === 'darwin') {
+  width = 1440
+  height = 810
+} else {
+  width = 1440
+  height = 910
+}
+
 function createWindow() {
   // 创建浏览器窗口
   const mainWindow = new BrowserWindow({
-    width: 1440,
-    height: 910,
+    width: width,
+    height: height,
     resizable: false,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
