@@ -38,10 +38,29 @@
           @change="loadSongs"
         />
         <a
-          class="inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
+          class="inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 mr-4"
           @click="$refs.fileInput.click()"
         >
           Get Started
+          <svg
+            aria-hidden="true"
+            class="ml-2 -mr-1 w-4 h-4"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              clip-rule="evenodd"
+              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+              fill-rule="evenodd"
+            ></path>
+          </svg>
+        </a>
+        <a
+          class="inline-flex justify-center items-center py-2.5 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900 ml-4"
+          href="https://github.com/Zhu-Aemon/VueGallery"
+        >
+          Read Doc
           <svg
             aria-hidden="true"
             class="ml-2 -mr-1 w-4 h-4"
@@ -422,4 +441,5 @@ const displaySongs = (songs) => {
   store.commit('setSongs', songs)
   router.push({ name: 'songList' })
 }
+
 </script>

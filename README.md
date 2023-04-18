@@ -1,3 +1,4 @@
+
 # Gallery
 
 English | [简体中文](./README_cn.md)
@@ -20,7 +21,9 @@ PC.🎧
 You are count as a target of this Gallery program if you:
 
 - have a <b>passion</b> for music quality like Hi-Res or Lossless
+
 - prefer to keep everything in their PC in a rather nice way
+
 - want to keep everything private and secure
 
 ### ⭐Advantage
