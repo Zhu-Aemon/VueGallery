@@ -29,22 +29,53 @@
               class="p-3 text-sm text-gray-900 whitespace-nowrap text-left font-medium select-none"
               :key="index"
               @dblclick="songDblClicked(song)"
-              v-if="song && (song.title.includes(searchQuery) || song.artist.includes(searchQuery) || song.album.includes(searchQuery))"
+              v-if="
+                song &&
+                (song.title.includes(searchQuery) ||
+                  song.artist.includes(searchQuery) ||
+                  song.album.includes(searchQuery))
+              "
             >
               <span class="cursor-pointer">{{ song.title }}</span>
             </th>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-                v-if="song && (song.title.includes(searchQuery) || song.artist.includes(searchQuery) || song.album.includes(searchQuery))"
+            <td
+              class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
+              v-if="
+                song &&
+                (song.title.includes(searchQuery) ||
+                  song.artist.includes(searchQuery) ||
+                  song.album.includes(searchQuery))
+              "
             >
-              <span class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline">{{ song.artist }}</span>
+              <span
+                class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
+                @click="showArtist(song.artist)"
+                >{{ song.artist }}</span
+              >
             </td>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-                v-if="song && (song.title.includes(searchQuery) || song.artist.includes(searchQuery) || song.album.includes(searchQuery))"
+            <td
+              class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
+              v-if="
+                song &&
+                (song.title.includes(searchQuery) ||
+                  song.artist.includes(searchQuery) ||
+                  song.album.includes(searchQuery))
+              "
             >
-              <span class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline">{{ song.album }}</span>
+              <span
+                class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
+                @click="showAlbum(song.album)"
+                >{{ song.album }}</span
+              >
             </td>
-            <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-                v-if="song && (song.title.includes(searchQuery) || song.artist.includes(searchQuery) || song.album.includes(searchQuery))"
+            <td
+              class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
+              v-if="
+                song &&
+                (song.title.includes(searchQuery) ||
+                  song.artist.includes(searchQuery) ||
+                  song.album.includes(searchQuery))
+              "
             >
               {{ formatTime(song.duration) }}
             </td>
@@ -58,14 +89,34 @@
 <script setup>
 import { useStore } from 'vuex'
 import formatTime from '../utils/timeParse'
-import {computed} from "vue";
+import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 const store = useStore()
+const router = useRouter()
 const songs = store.state.songs
 const searchQuery = computed(() => store.state.searchContent)
 
 const songDblClicked = (song) => {
   store.commit('setCurrentSong', song)
   // console.log('set currentSong as ', song.name)
+}
+
+const showArtist = (artist) => {
+  router.push({
+    name: 'artistPage',
+    query: {
+      artist: artist,
+    },
+  })
+}
+
+const showAlbum = (album) => {
+  router.push({
+    name: 'albumPage',
+    query: {
+      album: album,
+    },
+  })
 }
 </script>

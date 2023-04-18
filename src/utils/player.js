@@ -44,7 +44,7 @@ watch(currentSong, (newValue, oldValue) => {
     },
     onend: () => {
       EventBus.emit('song-end')
-    }
+    },
   })
   if (currentHowl && currentHowl.playing()) {
     // console.log('pause music and play', newValue)

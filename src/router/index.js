@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import LocalSongs from '@/views/LocalSongs.vue'
-import ArtistPage from "../views/ArtistPage.vue";
-import ExplorePage from "../views/ExplorePage.vue";
-import StatPage from "../views/StatPage.vue";
+import ArtistPage from '../views/ArtistPage.vue'
+import ExplorePage from '../views/ExplorePage.vue'
+import StatPage from '../views/StatPage.vue'
+import AlbumPage from '../views/AlbumPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -24,6 +25,11 @@ const router = createRouter({
       component: ArtistPage,
     },
     {
+      path: '/albumPage',
+      name: 'albumPage',
+      component: AlbumPage,
+    },
+    {
       path: '/explorePage',
       name: 'explorePage',
       component: ExplorePage,
@@ -32,7 +38,7 @@ const router = createRouter({
       path: '/statPage',
       name: 'statPage',
       component: StatPage,
-    }
+    },
   ],
 })
 

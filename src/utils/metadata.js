@@ -22,12 +22,12 @@ async function readMetadataAndSetCover(filePath) {
       const artist = metadata.common.artist
       // console.log('! artist', artist)
       const album = metadata.common.album
-      const lyrics = metadata.common?.unsynchronisedLyrics;
+      const lyrics = metadata.common?.unsynchronisedLyrics
 
       if (lyrics) {
-        console.log(lyrics);
+        console.log(lyrics)
       } else {
-        console.log('该歌曲没有歌词');
+        console.log('该歌曲没有歌词')
       }
       store.commit('setCurrentMetadata', {
         name: title,

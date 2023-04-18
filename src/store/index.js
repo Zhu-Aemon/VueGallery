@@ -59,7 +59,7 @@ const store = createStore({
     },
     setSearchContent(state, searchContent) {
       state.searchContent = searchContent
-    }
+    },
   },
   actions: {
     // your actions here

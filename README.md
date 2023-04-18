@@ -2,7 +2,7 @@
 
 English | [简体中文](./README_cn.md)
 
-## About The  Project
+## About The Project
 
 ### 计算机设计大赛参赛作品
 
@@ -52,7 +52,7 @@ Midterm Todo:
 - 🎯Artist Gallery
 - 🎯Album Gallery
 
-----
+---
 
 ## <img height="40" src="https://raw.githubusercontent.com/innng/innng/master/assets/kyubey.gif"/>About Author
 
@@ -88,4 +88,3 @@ Midterm Todo:
 <p align="center">
         <img src="https://raw.githubusercontent.com/mayhemantt/mayhemantt/Update/svg/Bottom.svg" alt="Github Stats" />
 </p>
-
