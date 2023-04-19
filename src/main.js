@@ -6,6 +6,7 @@ import store from '@/store'
 import 'tailwindcss/tailwind.css'
 import '@/utils/player.js'
 import '@/utils/metadata.js'
+// import './test.js'
 
 const app = createApp(App)
 

@@ -49,19 +49,19 @@
             >
               <span
                 class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
-                v-if='song.artist.includes("/")'
+                v-if="song.artist.includes('/')"
                 v-for="(artist, index) in processedArtists(song)"
-                @click='showArtist(artist)'
+                @click="showArtist(artist)"
               >
-              {{ artist }} /
-            </span>
+                {{ artist }} /
+              </span>
               <span
                 class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
                 v-else
-                @click='showArtist(song.artist)'
+                @click="showArtist(song.artist)"
               >
-              {{ song.artist }}
-            </span>
+                {{ song.artist }}
+              </span>
             </td>
             <td
               class="p-3 text-sm text-gray-700 select-none"
@@ -74,7 +74,7 @@
             >
               <span
                 class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
-                @click="showAlbum(song.album)"
+                @click="showAlbum(song.album, song.artist)"
                 >{{ song.album }}</span
               >
             </td>
@@ -121,19 +121,20 @@ const showArtist = (artist) => {
   })
 }
 
-const showAlbum = (album) => {
+const showAlbum = (album, artist) => {
   router.push({
     name: 'albumPage',
     query: {
       album: album,
+      artist: artist,
     },
   })
 }
 
 const processedArtists = (song) => {
   if (song.artist.includes('/')) {
-    return song.artist.split('/');
+    return song.artist.split('/')
   }
-  return [song.artist];
-};
+  return [song.artist]
+}
 </script>

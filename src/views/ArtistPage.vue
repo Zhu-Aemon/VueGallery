@@ -62,16 +62,16 @@
           >
             <span
               class="lg:hover:text-blue-600 lg:hover:underline"
-              v-if='song.artist.includes("/")'
+              v-if="song.artist.includes('/')"
               v-for="(artist, index) in processedArtists(song)"
-              @click='showArtist(artist)'
+              @click="showArtist(artist)"
             >
               {{ artist }} /
             </span>
             <span
               class="lg:hover:text-blue-600 lg:hover:underline"
               v-else
-              @click='showArtist(song.artist)'
+              @click="showArtist(song.artist)"
             >
               {{ song.artist }}
             </span>
@@ -82,7 +82,7 @@
           >
             <span
               class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
-              @click="showAlbum(song.album)"
+              @click="showAlbum(song.album, song.artist)"
               >{{ song.album }}</span
             >
           </td>
@@ -116,10 +116,10 @@ const songs = computed(() => store.state.songs)
 
 const processedArtists = (song) => {
   if (song.artist.includes('/')) {
-    return song.artist.split('/');
+    return song.artist.split('/')
   }
-  return [song.artist];
-};
+  return [song.artist]
+}
 
 onMounted(() => {
   const artist = route.query.artist
@@ -156,13 +156,15 @@ onMounted(() => {
   })
 })
 
-const showAlbum = (album) => {
+const showAlbum = (album, artist) => {
   router.push({
     name: 'albumPage',
     query: {
       album: album,
+      artist: artist,
     },
   })
+  console.log(artist)
 }
 
 const songDblClicked = (song) => {
@@ -171,6 +173,7 @@ const songDblClicked = (song) => {
 }
 
 const showArtist = (artist) => {
+  store.commit('increaseKey')
   router.push({
     name: 'artistPage',
     query: {

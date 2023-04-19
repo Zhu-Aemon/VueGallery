@@ -15,6 +15,7 @@ const store = createStore({
     shuffle: 'loop',
     volume: 100,
     searchContent: '',
+    componentKey: 0,
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -59,6 +60,9 @@ const store = createStore({
     },
     setSearchContent(state, searchContent) {
       state.searchContent = searchContent
+    },
+    increaseKey(state) {
+      state.componentKey++
     },
   },
   actions: {

@@ -349,19 +349,19 @@ let currentPlayList = computed(() => store.state.songs)
 
 watch(artist, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    console.log(newValue)
+    // console.log(newValue)
   }
 })
 
 watch(title, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    console.log(newValue)
+    // console.log(newValue)
   }
 })
 
 watch(album, (newValue, oldValue) => {
   if (newValue !== oldValue) {
-    console.log(newValue)
+    // console.log(newValue)
   }
 })
 
