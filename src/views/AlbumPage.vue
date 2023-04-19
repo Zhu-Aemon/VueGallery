@@ -22,21 +22,50 @@
             }}</span>
           </div>
           <div class="font-medium ml-12 mt-1 text-sm text-black">
-            <span v-if='trackNumber > 1'>{{
-                `${ formatDate(publishDate)} · ${trackNumber} Songs `
-              }}</span>
-            <span v-else>{{
-                `${ formatDate(publishDate)} · 1 Song `
-              }}</span>
+            <span v-if="trackNumber > 1">{{
+              `${formatDate(publishDate)} · ${trackNumber} Songs `
+            }}</span>
+            <span v-else>{{ `${formatDate(publishDate)} · 1 Song ` }}</span>
           </div>
-          <div class="font-bold ml-12 mt-3 text-sm text-black">
+          <div
+            class="font-bold ml-12 mt-3 text-sm text-black max-h-limited line-clamp-limited overflow-hidden relative"
+            ref="albumDescElement"
+          >
             {{ albumDesc }}
+          </div>
+          <button
+            v-if="isTruncated"
+            class="ellipsis-below font-medium text-sm cursor-pointer ml-12 text-gray-500 hover:text-blue-600 hover:underline"
+            @click="toggleFullDesc"
+            type="button"
+            ref="expandButton"
+          >
+            Click To Expand
+          </button>
+          <div
+            v-show="showPopup"
+            class="fixed z-10 left-0 top-0 w-full h-full flex items-center justify-center"
+            @click="toggleFullDesc"
+          >
+            <div
+              class="bg-white border-gray-700 w-3/4 max-h-96 mx-auto rounded-lg drop-shadow-lg p-6 overflow-y-auto custom-scrollbar"
+              @click.stop
+            >
+              <p class="font-bold text-2xl">{{ albumName }}</p>
+              <p class="font-medium text-2xs mt-3">{{ albumDesc }}</p>
+              <button
+                class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                @click="toggleFullDesc"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </li>
     </div>
   </div>
-  <h1 class="text-2xl font-bold ml-20">单曲</h1>
+  <h1 class="text-2xl font-bold ml-20">本地单曲</h1>
   <div class="rounded-lg shadow ml-20 mr-20 mt-6">
     <table class="w-full text-gray-500 dark:text-gray-400">
       <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
@@ -108,37 +137,45 @@
       </tbody>
     </table>
   </div>
-  <h1 class="text-2xl font-bold ml-20 mt-5">评论</h1>
+  <h1 class="text-2xl font-bold ml-20 mt-5">网易云评论</h1>
   <div class="rounded-lg shadow ml-20 mr-20 mt-6 mb-28">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-      <tr>
-        <th scope="col" class="w-1/4 px-6 py-3">
-          用户名
-        </th>
-        <th scope="col" class="w-3/4 px-6 py-3">
-          评论
-        </th>
-      </tr>
+      <thead
+        class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+      >
+        <tr>
+          <th scope="col" class="w-1/4 px-6 py-3">用户名</th>
+          <th scope="col" class="w-3/4 px-6 py-3">评论</th>
+        </tr>
       </thead>
       <tbody>
-      <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-          v-for='(comment, index) in hotComments'
-      >
-
-        <th scope="row" class="flex items-center px-6 py-4 text-gray-900 dark:text-white">
-          <img class="w-10 h-10 rounded-full" :src="comment.user.avatarUrl" alt="Jese image">
-          <div class="pl-3">
-            <div class="text-base font-semibold">{{ comment.user.nickname }}</div>
-            <div class="font-normal text-gray-500">{{ comment.timeStr }}</div>
-          </div>
-        </th>
-        <td class="px-6 py-4 text-black font-medium">
-          {{ comment.content }}
-          <div class="font-normal text-gray-500">{{ `❤️ ${comment.likedCount}` }}</div>
-        </td>
-      </tr>
-
+        <tr
+          class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+          v-for="(comment, index) in hotComments"
+        >
+          <th
+            scope="row"
+            class="flex items-center px-6 py-4 text-gray-900 dark:text-white"
+          >
+            <img
+              class="w-10 h-10 rounded-full"
+              :src="comment.user.avatarUrl"
+              alt="Jese image"
+            />
+            <div class="pl-3">
+              <div class="text-base font-semibold">
+                {{ comment.user.nickname }}
+              </div>
+              <div class="font-normal text-gray-500">{{ comment.timeStr }}</div>
+            </div>
+          </th>
+          <td class="px-6 py-4 text-black font-medium">
+            {{ comment.content }}
+            <div class="font-normal text-gray-500">
+              {{ `❤️ ${comment.likedCount}` }}
+            </div>
+          </td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -147,7 +184,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, nextTick, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import formatTime from '../utils/timeParse'
 import { formatDate } from '../utils/timeParse'
@@ -156,25 +193,24 @@ const route = useRoute()
 const router = useRouter()
 const store = useStore()
 
+let resizeObserver = null
 let artistData = ref({})
 let artistDetail = ref({})
 let artistId = ref(0)
 let albumDetail = ref({})
 let comments = ref({})
+let isTruncated = ref(false)
+let showPopup = ref(false)
+const albumDescElement = ref(null)
+
 const songs = computed(() => store.state.songs)
 const picURL = computed(
   () =>
     artistDetail.value?.album?.picUrl ||
     'https://flowbite.com/docs/images/logo.svg'
 )
-const publishDate = computed(
-  () =>
-    artistDetail.value?.album?.publishTime
-)
-const trackNumber = computed(
-  () =>
-    artistDetail.value?.album?.size
-)
+const publishDate = computed(() => artistDetail.value?.album?.publishTime)
+const trackNumber = computed(() => artistDetail.value?.album?.size)
 const albumName = computed(
   () => artistDetail.value?.album?.name || '404 NOT FOUND'
 )
@@ -248,7 +284,28 @@ onMounted(() => {
         })
     }
   })
+  if (!('ResizeObserver' in window)) return
+
+  checkIfTruncated()
+  resizeObserver = new ResizeObserver(() => {
+    checkIfTruncated()
+  })
+  resizeObserver.observe(albumDescElement.value)
 })
+
+onBeforeUnmount(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+  }
+})
+
+function checkIfTruncated() {
+  if (!albumDescElement.value) return
+
+  isTruncated.value =
+    albumDescElement.value.scrollHeight > albumDescElement.value.clientHeight
+  console.log(isTruncated.value)
+}
 
 const showAlbum = (album) => {
   router.push({
@@ -273,4 +330,40 @@ const showArtist = (artist) => {
     },
   })
 }
+
+const toggleFullDesc = () => {
+  showPopup.value = !showPopup.value
+}
 </script>
+
+<style scoped>
+.ellipsis-below {
+  display: inline-block;
+  /*padding-left: 0.25rem;*/
+}
+</style>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Firefox scrollbar styles */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+</style>

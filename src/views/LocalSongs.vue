@@ -2,7 +2,7 @@
   <div class="bg-white px-10 w-full py-2 mt-20 mb-24">
     <h1 class="text-3xl mb-3 font-bold" v-if="!searchQuery">Local Songs</h1>
     <h1 class="text-3xl mb-3 font-bold" v-if="searchQuery">Search Results</h1>
-    <div class="relative overflow-auto rounded-lg shadow">
+    <div class="relative overflow-auto custom-scrollbar rounded-lg shadow">
       <table class="w-full text-gray-500 dark:text-gray-400">
         <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
           <tr>
@@ -138,3 +138,28 @@ const processedArtists = (song) => {
   return [song.artist]
 }
 </script>
+
+<style scoped>
+.custom-scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Firefox scrollbar styles */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+</style>

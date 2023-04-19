@@ -17,8 +17,38 @@
             >
           </div>
           <div class="font-bold ml-12 text-2xs text-gray-700">艺人</div>
-          <div class="font-bold ml-12 mt-3 text-sm text-gray-700">
+          <div
+            class="font-bold ml-12 mt-3 text-sm text-gray-700 max-h-limited line-clamp-limited overflow-hidden relative"
+            ref="albumDescElement"
+          >
             {{ artistDetail.briefDesc }}
+          </div>
+          <button
+            v-if="isTruncated"
+            class="ellipsis-below font-medium text-sm cursor-pointer ml-12 text-gray-500 hover:text-blue-600 hover:underline"
+            @click='toggleFullDesc'
+            type="button"
+            ref="expandButton"
+            >Click To Expand</button
+          >
+          <div
+            v-show="showPopup"
+            class="fixed z-10 left-0 top-0 w-full h-full flex items-center justify-center"
+            @click="toggleFullDesc"
+          >
+            <div
+              class="bg-white border-gray-700 w-3/4 max-h-96 mx-auto rounded-lg drop-shadow-lg p-6 overflow-y-auto custom-scrollbar"
+              @click.stop
+            >
+              <p class="font-bold text-2xl">{{ artistDetail.name }}</p>
+              <p class="font-medium text-2xs mt-3">{{ artistDetail.briefDesc }}</p>
+              <button
+                class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                @click="toggleFullDesc"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       </li>
@@ -101,7 +131,7 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch, computed, onBeforeUnmount } from 'vue'
 import { useStore } from 'vuex'
 import formatTime from '../utils/timeParse'
 
@@ -109,9 +139,13 @@ const route = useRoute()
 const router = useRouter()
 const store = useStore()
 
+let resizeObserver = null
 let artistData = ref({})
 let artistDetail = ref({})
 let artistId = ref(0)
+let showPopup = ref(false)
+let isTruncated = ref(false)
+const albumDescElement = ref(null)
 const songs = computed(() => store.state.songs)
 
 const processedArtists = (song) => {
@@ -154,6 +188,14 @@ onMounted(() => {
         })
     }
   })
+
+  if (!('ResizeObserver' in window)) return
+
+  checkIfTruncated()
+  resizeObserver = new ResizeObserver(() => {
+    checkIfTruncated()
+  })
+  resizeObserver.observe(albumDescElement.value)
 })
 
 const showAlbum = (album, artist) => {
@@ -181,4 +223,53 @@ const showArtist = (artist) => {
     },
   })
 }
+
+onBeforeUnmount(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+  }
+})
+
+function checkIfTruncated() {
+  if (!albumDescElement.value) return
+
+  isTruncated.value =
+    albumDescElement.value.scrollHeight > albumDescElement.value.clientHeight
+  console.log(isTruncated.value)
+}
+
+const toggleFullDesc = () => {
+  showPopup.value = !showPopup.value
+}
 </script>
+
+<style scoped>
+.ellipsis-below {
+  display: inline-block;
+  /*padding-left: 0.25rem;*/
+}
+
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 0.5rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 1rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Firefox scrollbar styles */
+.custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
+}
+</style>

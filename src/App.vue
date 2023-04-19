@@ -1,7 +1,7 @@
 <template>
   <div>
     <NavBar />
-    <RouterView :key="componentKey" />
+    <RouterView :key="componentKey"/>
     <PlayBar />
   </div>
 </template>
