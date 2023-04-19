@@ -21,6 +21,14 @@
               `评论数：${albumComment || 0} 分享数：${albumShare}`
             }}</span>
           </div>
+          <div class="font-medium ml-12 mt-1 text-sm text-black">
+            <span v-if='trackNumber > 1'>{{
+                `${ formatDate(publishDate)} · ${trackNumber} Songs `
+              }}</span>
+            <span v-else>{{
+                `${ formatDate(publishDate)} · 1 Song `
+              }}</span>
+          </div>
           <div class="font-bold ml-12 mt-3 text-sm text-black">
             {{ albumDesc }}
           </div>
@@ -127,6 +135,7 @@
         </th>
         <td class="px-6 py-4 text-black font-medium">
           {{ comment.content }}
+          <div class="font-normal text-gray-500">{{ `❤️ ${comment.likedCount}` }}</div>
         </td>
       </tr>
 
@@ -141,6 +150,7 @@ import axios from 'axios'
 import { ref, onMounted, watch, computed } from 'vue'
 import { useStore } from 'vuex'
 import formatTime from '../utils/timeParse'
+import { formatDate } from '../utils/timeParse'
 
 const route = useRoute()
 const router = useRouter()
@@ -156,6 +166,14 @@ const picURL = computed(
   () =>
     artistDetail.value?.album?.picUrl ||
     'https://flowbite.com/docs/images/logo.svg'
+)
+const publishDate = computed(
+  () =>
+    artistDetail.value?.album?.publishTime
+)
+const trackNumber = computed(
+  () =>
+    artistDetail.value?.album?.size
 )
 const albumName = computed(
   () => artistDetail.value?.album?.name || '404 NOT FOUND'
@@ -201,7 +219,7 @@ onMounted(() => {
       // console.log(artistData.result.artists[0].id)
     })
     .catch((error) => {
-      console.log(error)
+      console.error(error)
     })
 
   watch(artistId, (newValue, oldValue) => {
@@ -226,7 +244,7 @@ onMounted(() => {
         .get(`http://localhost:3000/comment/album?id=${artistId.value}`)
         .then((response) => {
           comments.value = response.data
-          console.log(comments.value.hotComments[0])
+          // console.log(comments.value.hotComments[0])
         })
     }
   })
