@@ -196,7 +196,7 @@ const navigateToLocal = () => {
 }
 
 const navigateToExplore = () => {
-  if (loggedIn) {
+  if (loggedIn.value) {
     router.push({ name: 'login' })
   } else {
     router.push({ name: 'explorePage' })

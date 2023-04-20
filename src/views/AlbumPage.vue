@@ -306,7 +306,7 @@ function checkIfTruncated() {
 
   isTruncated.value =
     albumDescElement.value.scrollHeight > albumDescElement.value.clientHeight
-  console.log(isTruncated.value)
+  // console.log(isTruncated.value)
 }
 
 const showAlbum = (album) => {

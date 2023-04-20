@@ -4,7 +4,7 @@
     <img src="../assets/ncm.png" alt="ncm" width="70" />
   </div>
   <div class="mt-2">
-    <h1 class="justify-center items-center flex font-bold text-2xl">登录网易云账号</h1>
+    <h1 class="justify-center items-center flex font-semibold text-2xl">登录网易云账号</h1>
   </div>
   <div class="flex justify-center items-center mt-10">
     <div class="bg-qrbg p-4 rounded-[20px] inline-block">
@@ -82,12 +82,26 @@ const getLoginState = async (key) => {
   try {
     const result = await axios.get(`http://localhost:3000/login/qr/check?key=${key}&timestamp=${Date.now()}`)
     logInResponse.value = result.data
-    console.log('get data!', logInResponse.value.code)
+    // console.log('get data!', logInResponse.value.code)
     if (logInResponse.value.code === 803) {
-      console.log(result)
-      console.log('login successful!')
+      // console.log(result)
+      const cookie = result.data.cookie
+      const info = await axios({
+        url: `http://localhost:3000/login/status?timestamp=${Date.now()}`,
+        method: 'post',
+        data: {
+          cookie,
+        },
+      })
+      // console.log('info.data: ', info.data)
+      // const userId = info.data.data.account.id
+      // const createTime = info.data.data.account.createTime
+      // const avatarUrl = info.data.data.profile.avatarUrl
+      // const user_name = info.data.data.profile.nickname
+      // console.log(userId, createTime, avatarUrl, user_name)
+      // console.log('login successful!')
       router.push({ name: 'explorePage' })
-      // store.commit('setLoginState', true)
+      store.commit('setLoginState', true)
       clearInterval(IntervalId)
     }
   } catch(error) {

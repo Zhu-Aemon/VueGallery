@@ -1,7 +1,7 @@
 <template>
   <div class="bg-white px-10 w-full py-2 mt-20 mb-24">
-    <h1 class="text-3xl mb-3 font-bold" v-if="!searchQuery">Local Songs</h1>
-    <h1 class="text-3xl mb-3 font-bold" v-if="searchQuery">Search Results</h1>
+    <h1 class="text-3xl mb-3 font-bold" v-if="!searchQuery">本地歌曲</h1>
+    <h1 class="text-3xl mb-3 font-bold" v-if="searchQuery">搜索结果</h1>
     <div class="relative overflow-auto custom-scrollbar rounded-lg shadow">
       <table class="w-full text-gray-500 dark:text-gray-400">
         <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">

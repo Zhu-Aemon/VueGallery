@@ -16,9 +16,11 @@ const store = createStore({
     volume: 100,
     searchContent: '',
     componentKey: 0,
-    userLoggedIn: false,
+    userLoggedIn: true,
     userId: 0,
     userName: '',
+    userAvatar: '',
+    createTime: '',
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -75,6 +77,12 @@ const store = createStore({
     },
     setUserName(state, username) {
       state.userName = username
+    },
+    setUserAvatar(state, url) {
+      state.userAvatar = url
+    },
+    setCreateTime(state, timestamp) {
+      state.createTime = timestamp
     }
   },
   actions: {
