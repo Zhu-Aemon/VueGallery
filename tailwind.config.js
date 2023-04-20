@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         primary: '#94e3fe',
         secondary: '#35cbfb',
+        qrbg: '#ebeffc',
       },
       lineHeight: {
         limited: '1.2em',

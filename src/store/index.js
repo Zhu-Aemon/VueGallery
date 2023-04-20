@@ -16,6 +16,9 @@ const store = createStore({
     volume: 100,
     searchContent: '',
     componentKey: 0,
+    userLoggedIn: false,
+    userId: 0,
+    userName: '',
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -64,6 +67,15 @@ const store = createStore({
     increaseKey(state) {
       state.componentKey++
     },
+    setLoginState(state, loginState) {
+      state.userLoggedIn = loginState
+    },
+    setUserId(state, userId) {
+      state.userId = userId
+    },
+    setUserName(state, username) {
+      state.userName = username
+    }
   },
   actions: {
     // your actions here

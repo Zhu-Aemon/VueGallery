@@ -23,6 +23,8 @@
     "mitt": "^3.0.0",
     "music-metadata": "^8.1.4",
     "music-metadata-browser": "^2.5.9",
+    "qrcode": "^1.5.1",
+    "qrcodejs": "^1.0.0",
     "vite-plugin-commonjs": "^0.6.2",
     "vite-plugin-legacy": "^2.1.0",
     "vue": "^3.2.47",
