@@ -49,7 +49,7 @@
             >
               <span
                 class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
-                v-if="song.artist.includes('/')"
+                v-if="song.artist.includes('/') || song.artist.includes('&')"
                 v-for="(artist, index) in processedArtists(song)"
                 @click="showArtist(artist)"
               >
@@ -134,6 +134,8 @@ const showAlbum = (album, artist) => {
 const processedArtists = (song) => {
   if (song.artist.includes('/')) {
     return song.artist.split('/')
+  } else if (song.artist.includes('&')) {
+    return song.artist.split('&')
   }
   return [song.artist]
 }

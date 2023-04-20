@@ -112,6 +112,7 @@
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             data-modal-target="defaultModal"
             data-modal-toggle="defaultModal"
+            @click="toggleUIDesc"
             type="button"
           >
             Read More
@@ -129,73 +130,36 @@
               ></path>
             </svg>
           </button>
-          <!-- UI Description Modal-->
           <div
-            id="defaultModal"
-            aria-hidden="true"
-            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto custom-scrollbar md:inset-0 h-[calc(100%-1rem)] max-h-full"
-            tabindex="-1"
+            v-show="UIshowPopup"
+            class="fixed z-10 left-0 top-0 w-full h-full flex items-center justify-center"
+            @click="toggleUIDesc"
           >
-            <div class="relative w-full max-w-2xl max-h-full">
-              <!-- Modal content -->
-              <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div
-                  class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
-                >
-                  <h3
-                    class="text-xl font-semibold text-gray-900 dark:text-white"
-                  >
-                    Card UI Design
-                  </h3>
-                  <button
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-hide="defaultModal"
-                    type="button"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        clip-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        fill-rule="evenodd"
-                      ></path>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                  </button>
-                </div>
-                <!-- Modal body -->
-                <div class="p-6 space-y-6">
-                  <p
-                    class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
-                  >
-                    A card UI design is an entire interface based largely or
-                    exclusively on presenting the user content on cards. The
-                    logic behind this is to avoid long texts and render content
-                    more scannable. Even though users might not be familiar with
-                    the concept of a card from a design point of view – they
-                    instantly know how to use UI cards.
-                  </p>
-                  <p
-                    class="text-base leading-relaxed text-gray-500 dark:text-gray-400"
-                  >
-                    This is because, before becoming prolific in digital UI
-                    design, physical cards were already a popular way of
-                    conveying specific chunks of information. Used to
-                    communicate a myriad of different types of information,
-                    cards became an easy way to scan or memorize parts of
-                    information. Business cards helped us remember the minute
-                    details of a florist down the road or the name and stats of
-                    a baseball player.
-                  </p>
-                </div>
-                <!-- Modal footer -->
-              </div>
+            <div
+              class="bg-white border-gray-700 w-3/4 max-h-96 mx-auto rounded-lg drop-shadow-lg p-6 overflow-y-auto custom-scrollbar"
+              @click.stop
+            >
+              <p class="font-bold text-2xl">Card UI Design</p>
+              <p class="font-medium text-2xs mt-3">A card UI design is an entire interface based largely or
+                exclusively on presenting the user content on cards. The
+                logic behind this is to avoid long texts and render content
+                more scannable. Even though users might not be familiar with
+                the concept of a card from a design point of view – they
+                instantly know how to use UI cards.</p>
+              <p class="font-medium text-2xs mt-3">This is because, before becoming prolific in digital UI
+                design, physical cards were already a popular way of
+                conveying specific chunks of information. Used to
+                communicate a myriad of different types of information,
+                cards became an easy way to scan or memorize parts of
+                information. Business cards helped us remember the minute
+                details of a florist down the road or the name and stats of
+                a baseball player.</p>
+              <button
+                class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                @click="toggleUIDesc"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -233,9 +197,8 @@
           </p>
           <button
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            data-modal-target="Development Modal"
-            data-modal-toggle="Development Modal"
             type="button"
+            @click="toggleDevDesc"
           >
             Read More
             <svg
@@ -254,153 +217,127 @@
           </button>
           <!-- UI Description Modal-->
           <div
-            id="Development Modal"
-            aria-hidden="true"
-            class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto custom-scrollbar md:inset-0 h-[calc(100%-1rem)]"
-            tabindex="0"
+            v-show="DevshowPopup"
+            class="fixed z-10 left-0 top-0 w-full h-full flex items-center justify-center"
+            @click="toggleDevDesc"
           >
-            <div class="relative w-full max-w-2xl max-h-full">
-              <!-- Modal content -->
-              <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div
-                  class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600"
+            <div
+              class="bg-white border-gray-700 w-3/4 max-h-96 mx-auto rounded-lg drop-shadow-lg p-6 overflow-y-auto custom-scrollbar"
+              @click.stop
+            >
+              <p class="font-bold text-2xl">Refactor Project with Vue.js</p>
+              <div
+                class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <time
+                  class="text-lg font-semibold text-gray-900 dark:text-white"
+                >November 13th, 2022</time
                 >
-                  <h3
-                    class="text-xl font-semibold text-gray-900 dark:text-white"
-                  >
-                    Refactor Project with Vue.js
-                  </h3>
-                  <button
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                    data-modal-hide="Development Modal"
-                    type="button"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="w-5 h-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                      xmlns="http://www.w3.org/2000/svg"
+                <ol
+                  class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
+                >
+                  <li>
+                    <a
+                      class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
                     >
-                      <path
-                        clip-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        fill-rule="evenodd"
-                      ></path>
-                    </svg>
-                    <span class="sr-only">Close modal</span>
-                  </button>
-                </div>
-                <!-- Modal body -->
-                <div
-                  class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <time
-                    class="text-lg font-semibold text-gray-900 dark:text-white"
-                    >November 13th, 2022</time
-                  >
-                  <ol
-                    class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
-                  >
-                    <li>
-                      <a
-                        class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <img
-                          class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                          src="src/assets/TZ_Avatar.jpg"
-                          alt="TZ"
-                        />
-                        <div class="text-gray-600 dark:text-gray-400">
-                          <div class="text-base font-normal">
+                      <img
+                        class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
+                        src="src/assets/TZ_Avatar.jpg"
+                        alt="TZ"
+                      />
+                      <div class="text-gray-600 dark:text-gray-400">
+                        <div class="text-base font-normal">
                             <span
                               class="font-medium text-gray-900 dark:text-white"
-                              >王天柱</span
+                            >王天柱</span
                             >
-                            started developing gallery using PySide2 and Python
-                          </div>
-                          <div class="text-sm font-normal">
-                            Application Performance is compromised
-                          </div>
+                          started developing gallery using PySide2 and Python
                         </div>
-                      </a>
-                    </li>
-                  </ol>
-                </div>
-                <div
-                  class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <time
-                    class="text-lg font-semibold text-gray-900 dark:text-white"
-                    >December 20th, 2022</time
-                  >
-                  <ol
-                    class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
-                  >
-                    <li>
-                      <a
-                        class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <img
-                          class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                          src="src/assets/TZ_Avatar.jpg"
-                          alt="Jese Leos image"
-                        />
-                        <div class="text-gray-600 dark:text-gray-400">
-                          <div class="text-base font-normal">
-                            <span
-                              class="font-medium text-gray-900 dark:text-white"
-                              >王天柱</span
-                            >
-                            finished Gallery Development using PySide2
-                          </div>
-                          <div class="text-sm font-normal">
-                            The packaged application is too large
-                          </div>
+                        <div class="text-sm font-normal">
+                          Application Performance is compromised
                         </div>
-                      </a>
-                    </li>
-                  </ol>
-                </div>
-                <div
-                  class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <time
-                    class="text-lg font-semibold text-gray-900 dark:text-white"
-                    >March 3rd, 2023</time
-                  >
-                  <ol
-                    class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
-                  >
-                    <li>
-                      <a
-                        class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
-                      >
-                        <img
-                          class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                          src="src/assets/TZ_Avatar.jpg"
-                          alt="Jese Leos image"
-                        />
-                        <div class="text-gray-600 dark:text-gray-400">
-                          <div class="text-base font-normal">
-                            <span
-                              class="font-medium text-gray-900 dark:text-white"
-                              >王天柱</span
-                            >
-                            started to refactor project using Vue.js and
-                            Electron
-                          </div>
-                          <div class="text-sm font-normal">
-                            Use Tailwindcss to build amazing CSS
-                          </div>
-                        </div>
-                      </a>
-                    </li>
-                  </ol>
-                </div>
-                <!-- Modal footer -->
+                      </div>
+                    </a>
+                  </li>
+                </ol>
               </div>
+              <div
+                class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <time
+                  class="text-lg font-semibold text-gray-900 dark:text-white"
+                >December 20th, 2022</time
+                >
+                <ol
+                  class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
+                >
+                  <li>
+                    <a
+                      class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      <img
+                        class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
+                        src="src/assets/TZ_Avatar.jpg"
+                        alt="Jese Leos image"
+                      />
+                      <div class="text-gray-600 dark:text-gray-400">
+                        <div class="text-base font-normal">
+                            <span
+                              class="font-medium text-gray-900 dark:text-white"
+                            >王天柱</span
+                            >
+                          finished Gallery Development using PySide2
+                        </div>
+                        <div class="text-sm font-normal">
+                          The packaged application is too large
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ol>
+              </div>
+              <div
+                class="p-5 mb-4 border border-gray-100 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <time
+                  class="text-lg font-semibold text-gray-900 dark:text-white"
+                >March 3rd, 2023</time
+                >
+                <ol
+                  class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
+                >
+                  <li>
+                    <a
+                      class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
+                    >
+                      <img
+                        class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
+                        src="src/assets/TZ_Avatar.jpg"
+                        alt="Jese Leos image"
+                      />
+                      <div class="text-gray-600 dark:text-gray-400">
+                        <div class="text-base font-normal">
+                            <span
+                              class="font-medium text-gray-900 dark:text-white"
+                            >王天柱</span
+                            >
+                          started to refactor project using Vue.js and
+                          Electron
+                        </div>
+                        <div class="text-sm font-normal">
+                          Use Tailwindcss to build amazing CSS
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ol>
+              </div>
+              <button
+                class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                @click="toggleDevDesc"
+              >
+                Close
+              </button>
             </div>
           </div>
         </div>
@@ -413,9 +350,13 @@
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { getMetadata } from '../utils/metadata'
+import { ref } from 'vue'
 
 const store = useStore()
 const router = useRouter()
+
+const UIshowPopup = ref(false)
+const DevshowPopup = ref(false)
 
 const loadSongs = async (event) => {
   const folder = event.target.files[0].webkitRelativePath.split('/')[0]
@@ -440,5 +381,27 @@ const getSongs = async (files) => {
 const displaySongs = (songs) => {
   store.commit('setSongs', songs)
   router.push({ name: 'songList' })
+}
+
+const toggleUIDesc = () => {
+  UIshowPopup.value = !UIshowPopup.value
+  if (UIshowPopup.value) {
+    document.body.classList.add('overflow-hidden')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+  }
+}
+
+const toggleDevDesc = () => {
+  // console.log('before value:', DevshowPopup)
+  DevshowPopup.value = !DevshowPopup.value
+  // console.log('after value:', DevshowPopup)
+  if (DevshowPopup.value) {
+    document.body.classList.add('overflow-hidden')
+    // console.log('added!')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+    // console.log('removed!')
+  }
 }
 </script>

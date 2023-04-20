@@ -92,7 +92,7 @@
           >
             <span
               class="lg:hover:text-blue-600 lg:hover:underline"
-              v-if="song.artist.includes('/')"
+              v-if="song.artist.includes('/') || song.artist.includes('&')"
               v-for="(artist, index) in processedArtists(song)"
               @click="showArtist(artist)"
             >
@@ -151,6 +151,8 @@ const songs = computed(() => store.state.songs)
 const processedArtists = (song) => {
   if (song.artist.includes('/')) {
     return song.artist.split('/')
+  } else if (song.artist.includes('&')) {
+    return song.artist.split('&')
   }
   return [song.artist]
 }
@@ -240,6 +242,13 @@ function checkIfTruncated() {
 
 const toggleFullDesc = () => {
   showPopup.value = !showPopup.value
+  if (showPopup.value) {
+    document.body.classList.add('overflow-hidden')
+    // console.log('added!')
+  } else {
+    document.body.classList.remove('overflow-hidden')
+    // console.log('removed!')
+  }
 }
 </script>
 
