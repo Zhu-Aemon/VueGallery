@@ -64,7 +64,7 @@ onMounted(() => {
   watch(
     () => qrcodeStatus,
     (newValue, oldValue) => {
-      console.log('detected new login status', newValue)
+      // console.log('detected new login status', newValue)
       if (newValue === 803) {
         console.log('login successful!')
         router.push({ name: 'explorePage' })
@@ -96,6 +96,7 @@ const getLoginState = async (key) => {
     if (logInResponse.value.code === 803) {
       // console.log(result)
       const cookie = result.data.cookie
+      store.commit('setUserCookie', cookie)
       const info = await axios({
         url: `http://localhost:3000/login/status?timestamp=${Date.now()}`,
         method: 'post',
@@ -103,7 +104,7 @@ const getLoginState = async (key) => {
           cookie,
         },
       })
-      console.log('info.data: ', info.data)
+      // console.log('info.data: ', info.data)
       const userId = info.data.data.account.id
       // const createTime = info.data.data.account.createTime
       // const avatarUrl = info.data.data.profile.avatarUrl

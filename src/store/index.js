@@ -21,6 +21,7 @@ const store = createStore({
     userName: '',
     userAvatar: '',
     createTime: '',
+    userCookie: '',
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -83,6 +84,9 @@ const store = createStore({
     },
     setCreateTime(state, timestamp) {
       state.createTime = timestamp
+    },
+    setUserCookie(state, cookie) {
+      state.userCookie = cookie
     },
   },
   actions: {
