@@ -180,7 +180,7 @@
 <script setup>
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const store = useStore()
 const router = useRouter()
@@ -196,7 +196,8 @@ const navigateToLocal = () => {
 }
 
 const navigateToExplore = () => {
-  if (loggedIn.value) {
+  console.log(loggedIn.value)
+  if (!loggedIn.value) {
     router.push({ name: 'login' })
   } else {
     router.push({ name: 'explorePage' })

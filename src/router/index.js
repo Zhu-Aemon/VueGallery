@@ -5,7 +5,7 @@ import ArtistPage from '../views/ArtistPage.vue'
 import ExplorePage from '../views/ExplorePage.vue'
 import StatPage from '../views/StatPage.vue'
 import AlbumPage from '../views/AlbumPage.vue'
-import LoginPage from "../views/LoginPage.vue";
+import LoginPage from '../views/LoginPage.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,7 +44,7 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginPage,
-    }
+    },
   ],
 })
 

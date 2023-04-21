@@ -138,20 +138,23 @@
               @click.stop
             >
               <p class="font-bold text-2xl">Card UI Design</p>
-              <p class="font-medium text-2xs mt-3">A card UI design is an entire interface based largely or
-                exclusively on presenting the user content on cards. The
-                logic behind this is to avoid long texts and render content
-                more scannable. Even though users might not be familiar with
-                the concept of a card from a design point of view – they
-                instantly know how to use UI cards.</p>
-              <p class="font-medium text-2xs mt-3">This is because, before becoming prolific in digital UI
-                design, physical cards were already a popular way of
-                conveying specific chunks of information. Used to
-                communicate a myriad of different types of information,
-                cards became an easy way to scan or memorize parts of
-                information. Business cards helped us remember the minute
-                details of a florist down the road or the name and stats of
-                a baseball player.</p>
+              <p class="font-medium text-2xs mt-3">
+                A card UI design is an entire interface based largely or
+                exclusively on presenting the user content on cards. The logic
+                behind this is to avoid long texts and render content more
+                scannable. Even though users might not be familiar with the
+                concept of a card from a design point of view – they instantly
+                know how to use UI cards.
+              </p>
+              <p class="font-medium text-2xs mt-3">
+                This is because, before becoming prolific in digital UI design,
+                physical cards were already a popular way of conveying specific
+                chunks of information. Used to communicate a myriad of different
+                types of information, cards became an easy way to scan or
+                memorize parts of information. Business cards helped us remember
+                the minute details of a florist down the road or the name and
+                stats of a baseball player.
+              </p>
               <button
                 class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 @click="toggleUIDesc"
@@ -229,11 +232,9 @@
               >
                 <time
                   class="text-lg font-semibold text-gray-900 dark:text-white"
-                >November 13th, 2022</time
+                  >November 13th, 2022</time
                 >
-                <ol
-                  class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
-                >
+                <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                   <li>
                     <a
                       class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -245,10 +246,10 @@
                       />
                       <div class="text-gray-600 dark:text-gray-400">
                         <div class="text-base font-normal">
-                            <span
-                              class="font-medium text-gray-900 dark:text-white"
+                          <span
+                            class="font-medium text-gray-900 dark:text-white"
                             >王天柱</span
-                            >
+                          >
                           started developing gallery using PySide2 and Python
                         </div>
                         <div class="text-sm font-normal">
@@ -264,11 +265,9 @@
               >
                 <time
                   class="text-lg font-semibold text-gray-900 dark:text-white"
-                >December 20th, 2022</time
+                  >December 20th, 2022</time
                 >
-                <ol
-                  class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
-                >
+                <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                   <li>
                     <a
                       class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -280,10 +279,10 @@
                       />
                       <div class="text-gray-600 dark:text-gray-400">
                         <div class="text-base font-normal">
-                            <span
-                              class="font-medium text-gray-900 dark:text-white"
+                          <span
+                            class="font-medium text-gray-900 dark:text-white"
                             >王天柱</span
-                            >
+                          >
                           finished Gallery Development using PySide2
                         </div>
                         <div class="text-sm font-normal">
@@ -299,11 +298,9 @@
               >
                 <time
                   class="text-lg font-semibold text-gray-900 dark:text-white"
-                >March 3rd, 2023</time
+                  >March 3rd, 2023</time
                 >
-                <ol
-                  class="mt-3 divide-y divider-gray-200 dark:divide-gray-700"
-                >
+                <ol class="mt-3 divide-y divider-gray-200 dark:divide-gray-700">
                   <li>
                     <a
                       class="items-center block p-3 sm:flex hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -315,12 +312,11 @@
                       />
                       <div class="text-gray-600 dark:text-gray-400">
                         <div class="text-base font-normal">
-                            <span
-                              class="font-medium text-gray-900 dark:text-white"
+                          <span
+                            class="font-medium text-gray-900 dark:text-white"
                             >王天柱</span
-                            >
-                          started to refactor project using Vue.js and
-                          Electron
+                          >
+                          started to refactor project using Vue.js and Electron
                         </div>
                         <div class="text-sm font-normal">
                           Use Tailwindcss to build amazing CSS

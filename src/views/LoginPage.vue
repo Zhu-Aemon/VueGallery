@@ -1,15 +1,15 @@
-<!--suppress ALL -->
 <template>
   <div class="mt-24 mb-4 items-center justify-center flex">
     <img src="../assets/ncm.png" alt="ncm" width="70" />
   </div>
   <div class="mt-2">
-    <h1 class="justify-center items-center flex font-semibold text-2xl">登录网易云账号</h1>
+    <h1 class="justify-center items-center flex font-semibold text-2xl">
+      登录网易云账号
+    </h1>
   </div>
   <div class="flex justify-center items-center mt-10">
     <div class="bg-qrbg p-4 rounded-[20px] inline-block">
-      <canvas id="qrcode" ref="qrcodeCanvas">
-      </canvas>
+      <canvas id="qrcode" ref="qrcodeCanvas"> </canvas>
     </div>
   </div>
   <div class="mt-4 flex justify-center items-center font-medium text-2xs">
@@ -19,18 +19,21 @@
 
 <script setup>
 import axios from 'axios'
-import { ref, computed, onMounted, watch, onUnmounted } from "vue";
+import { ref, computed, onMounted, watch, onUnmounted } from 'vue'
 import QRCode from 'qrcode'
-import router from "../router";
+import router from '../router'
+import { useStore } from 'vuex'
 
+const store = useStore()
 const unikey = ref('')
 const qrurl = ref('')
 const qrcodeCanvas = ref(null)
 const qrcodeStatus = computed(() => logInResponse.value.code)
-const logInResponse = ref({ data: { code: null } });
+const logInResponse = ref({ data: { code: null } })
 
 onMounted(() => {
-  axios.get(`http://localhost:3000/login/qr/key?timestamp=${Date.now()}`)
+  axios
+    .get(`http://localhost:3000/login/qr/key?timestamp=${Date.now()}`)
     .then((response) => {
       // console.log(response)
       unikey.value = response.data.data.unikey
@@ -39,7 +42,12 @@ onMounted(() => {
 
   watch(unikey, (newValue, oldValue) => {
     if (newValue !== oldValue) {
-      axios.get(`http://localhost:3000/login/qr/create?key=${unikey.value}&timestamp=${Date.now()}`)
+      axios
+        .get(
+          `http://localhost:3000/login/qr/create?key=${
+            unikey.value
+          }&timestamp=${Date.now()}`
+        )
         .then((response) => {
           // console.log(response.data.data.qrurl)
           qrurl.value = response.data.data.qrurl
@@ -61,7 +69,7 @@ onMounted(() => {
         console.log('login successful!')
         router.push({ name: 'explorePage' })
       }
-  }
+    }
   )
 })
 
@@ -73,16 +81,18 @@ const generateQRCode = async (url) => {
     color: {
       dark: '#3d5ee2',
       light: '#ebeffc',
-    }
+    },
   }
   await QRCode.toCanvas(qrcodeCanvas.value, url, options)
 }
 
 const getLoginState = async (key) => {
   try {
-    const result = await axios.get(`http://localhost:3000/login/qr/check?key=${key}&timestamp=${Date.now()}`)
+    const result = await axios.get(
+      `http://localhost:3000/login/qr/check?key=${key}&timestamp=${Date.now()}`
+    )
     logInResponse.value = result.data
-    // console.log('get data!', logInResponse.value.code)
+    console.log('get data!', logInResponse.value.code)
     if (logInResponse.value.code === 803) {
       // console.log(result)
       const cookie = result.data.cookie
@@ -93,8 +103,8 @@ const getLoginState = async (key) => {
           cookie,
         },
       })
-      // console.log('info.data: ', info.data)
-      // const userId = info.data.data.account.id
+      console.log('info.data: ', info.data)
+      const userId = info.data.data.account.id
       // const createTime = info.data.data.account.createTime
       // const avatarUrl = info.data.data.profile.avatarUrl
       // const user_name = info.data.data.profile.nickname
@@ -102,9 +112,10 @@ const getLoginState = async (key) => {
       // console.log('login successful!')
       router.push({ name: 'explorePage' })
       store.commit('setLoginState', true)
+      store.commit('setUserId', userId)
       clearInterval(IntervalId)
     }
-  } catch(error) {
+  } catch (error) {
     console.error(error)
   }
 }
@@ -115,8 +126,7 @@ const IntervalId = setInterval(async () => {
   }
 }, 1000)
 
-// onUnmounted(() => {
-//   clearInterval(IntervalId)
-// })
-
+onUnmounted(() => {
+  clearInterval(IntervalId)
+})
 </script>

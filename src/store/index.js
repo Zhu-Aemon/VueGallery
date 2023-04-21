@@ -83,7 +83,7 @@ const store = createStore({
     },
     setCreateTime(state, timestamp) {
       state.createTime = timestamp
-    }
+    },
   },
   actions: {
     // your actions here

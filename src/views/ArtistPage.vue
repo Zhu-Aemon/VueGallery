@@ -26,11 +26,12 @@
           <button
             v-if="isTruncated"
             class="ellipsis-below font-medium text-sm cursor-pointer ml-12 text-gray-500 hover:text-blue-600 hover:underline"
-            @click='toggleFullDesc'
+            @click="toggleFullDesc"
             type="button"
             ref="expandButton"
-            >Click To Expand</button
           >
+            Click To Expand
+          </button>
           <div
             v-show="showPopup"
             class="fixed z-10 left-0 top-0 w-full h-full flex items-center justify-center"
@@ -41,7 +42,9 @@
               @click.stop
             >
               <p class="font-bold text-2xl">{{ artistDetail.name }}</p>
-              <p class="font-medium text-2xs mt-3">{{ artistDetail.briefDesc }}</p>
+              <p class="font-medium text-2xs mt-3">
+                {{ artistDetail.briefDesc }}
+              </p>
               <button
                 class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 @click="toggleFullDesc"
@@ -258,27 +261,26 @@ const toggleFullDesc = () => {
   /*padding-left: 0.25rem;*/
 }
 
-
 .custom-scrollbar::-webkit-scrollbar {
-    width: 0.5rem;
+  width: 0.5rem;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 1rem;
+  background: #888;
+  border-radius: 1rem;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
 
 /* Firefox scrollbar styles */
 .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
 }
 </style>

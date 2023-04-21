@@ -143,25 +143,25 @@ const processedArtists = (song) => {
 
 <style scoped>
 .custom-scrollbar::-webkit-scrollbar {
-    width: 0.5rem;
+  width: 0.5rem;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f1f1;
+  background: #f1f1f1;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 1rem;
+  background: #888;
+  border-radius: 1rem;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #555;
+  background: #555;
 }
 
 /* Firefox scrollbar styles */
 .custom-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
 }
 </style>
