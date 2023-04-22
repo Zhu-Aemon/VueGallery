@@ -2,7 +2,7 @@
   <div class="mt-20 mb-28">
     <div class="items-center flex">
       <div
-        class="bg-gray-50 shadow-lg ml-20 inline-block px-14 py-4 rounded-[20px] items-center"
+        class="bg-gray-50 shadow-lg ml-20 inline-block px-8 py-4 rounded-[20px] items-center"
       >
         <div class="flex flex-row items-center">
           <div class="justify-center align-middle items-center mr-6">
@@ -10,9 +10,15 @@
           </div>
           <li class="list-none mt-2 flex flex-col items-center">
             <h2 class="font-bold text-2xl text-gray-800">{{ username }}</h2>
-            <span class="font-normal text-sm mt-2 text-gray-700 opacity-90">{{
+            <span class="font-normal text-sm mt-1 text-gray-700 opacity-90">{{
               `${formatDate(createTime)}加入`
             }}</span>
+            <button type="button"
+                    class="mt-1 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    @click="logout"
+            >
+              退出登录
+            </button>
           </li>
         </div>
       </div>
@@ -114,6 +120,7 @@
     <div class="grid grid-cols-5 gap-x-12 gap-y-12 ml-20 mr-20">
       <div v-for='(pl, index) in playlist'>
         <img class="h-auto max-w-full rounded-[20px] cursor-pointer" :src="pl.coverImgUrl" alt=""
+             @click="showPlaylist(pl.id, pl.creator.nickname, pl.createTime, pl.coverImgUrl, pl.name)"
         >
         <div class='font-bold text-base'>
           {{ pl.name }}
@@ -284,6 +291,20 @@ const getUserPlayList = async () => {
   playlist.value = response.data.playlist
   console.log(response.data.playlist)
 }
+
+const showPlaylist = (playlistId, nickname, createTime, cover, name) => {
+  router.push({
+    name: 'playlist',
+    query: {
+      id: playlistId,
+      creator: nickname,
+      createTime: createTime,
+      cover: cover,
+      name: name,
+    },
+  })
+}
+
 </script>
 
 <style></style>
