@@ -36,11 +36,6 @@ const router = createRouter({
       component: ExplorePage,
     },
     {
-      path: '/statPage',
-      name: 'statPage',
-      component: StatPage,
-    },
-    {
       path: '/login',
       name: 'login',
       component: LoginPage,

@@ -62,6 +62,52 @@
       </div>
     </div>
     <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+    <div class="mt-4">
+      <div class="ml-20 text-2xl font-bold"><span class="cursor-pointer hover:underline hover:text-blue-600">每日推荐</span></div>
+      <div class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20">
+        <table class="w-full textho-gray-500 dark:text-gray-400">
+          <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
+          <tr>
+            <th class="w-2/5 p-3 text-sm font-semibold tracking-wide text-left">
+              Top Recommended
+            </th>
+            <th class="w-1/5 p-3 text-sm font-semibold tracking-wide text-left">
+              Artist
+            </th>
+            <th class="w-1/5 p-3 text-sm font-semibold tracking-wide text-left">
+              Album
+            </th>
+          </tr>
+          </thead>
+          <tbody class="divide-y bg-white">
+          <tr
+            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            v-if="songs"
+            v-for="(song, index) in songs.slice(0, 5)"
+          >
+            <th
+              class="p-3 text-sm text-gray-900 text-left font-medium select-none"
+            >
+              <span class="cursor-pointer">{{ song.name }}</span>
+            </th>
+            <td
+              class="p-3 text-sm text-gray-700 select-none"
+            >
+              <span v-for="ar in song.ar" v-if="song.ar.length > 1" class="cursor-pointer hover:underline hover:text-blue-600">
+                {{ ar.name }} /
+              </span>
+              <span v-else class="cursor-pointer hover:underline hover:text-blue-600">
+                {{ song.ar[0].name }}
+              </span>
+            </td>
+            <td class="p-3 text-sm text-gray-700 select-none">
+              <span class="cursor-pointer hover:underline hover:text-blue-600">{{ song.al.name }}</span>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -128,7 +174,7 @@ const getRecommendedDaily = async () => {
       cookie,
     },
   })
-  // console.log(response.data)
+  console.log(response.data)
   songs.value = response.data.data.dailySongs
 }
 
@@ -167,7 +213,7 @@ const get_user_likeList = async () => {
       cookie,
     },
   })
-  console.log(response.data)
+  // console.log(response.data)
   likeList.value = response.data.ids
 }
 </script>
