@@ -241,7 +241,7 @@
                     >
                       <img
                         class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                        src="src/assets/TZ_Avatar.jpg"
+                        src="@/assets/TZ_Avatar.jpg"
                         alt="TZ"
                       />
                       <div class="text-gray-600 dark:text-gray-400">
@@ -274,7 +274,7 @@
                     >
                       <img
                         class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                        src="src/assets/TZ_Avatar.jpg"
+                        src="@/assets/TZ_Avatar.jpg"
                         alt="Jese Leos image"
                       />
                       <div class="text-gray-600 dark:text-gray-400">
@@ -307,7 +307,7 @@
                     >
                       <img
                         class="w-12 h-12 mb-3 mr-3 rounded-full sm:mb-0"
-                        src="src/assets/TZ_Avatar.jpg"
+                        src="@/assets/TZ_Avatar.jpg"
                         alt="Jese Leos image"
                       />
                       <div class="text-gray-600 dark:text-gray-400">
