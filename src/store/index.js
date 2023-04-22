@@ -1,5 +1,6 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+import axios from 'axios'
 
 const store = createStore({
   state: {
@@ -22,6 +23,8 @@ const store = createStore({
     userAvatar: '',
     createTime: '',
     userCookie: '',
+    playLocal: true,
+    neteaseList: [],
   },
   mutations: {
     setFolderName(state, folderName) {
@@ -34,17 +37,24 @@ const store = createStore({
       state.playing = !state.playing
     },
     setCurrentSong(state, currentSong) {
+      console.log('set current!')
       state.currentSong = currentSong
-      const url = `file://${currentSong.path}`
-      const howl = new Howl({
-        src: [url],
-        html5: true,
-        volume: state.volume / 100,
-        onload: () => {
-          state.currentDuration = howl.duration()
-          // console.log(state.currentDuration)
-        },
-      })
+      let url = ''
+      if (state.playLocal) {
+        url = `file://${currentSong.path}`
+        const howl = new Howl({
+          src: [url],
+          html5: true,
+          volume: state.volume / 100,
+          onload: () => {
+            state.currentDuration = howl.duration()
+            console.log(state.currentDuration)
+          },
+        })
+      } else {
+        url = getPlayUrl(currentSong.id)
+        state.currentDuration = currentSong.dt / 1000
+      }
     },
     stopPlay(state) {
       state.playing = false
@@ -88,6 +98,12 @@ const store = createStore({
     setUserCookie(state, cookie) {
       state.userCookie = cookie
     },
+    setPlayLocal(state, playLocal) {
+      state.playLocal = playLocal
+    },
+    setNeteaseList(state, list) {
+      state.neteaseList = list
+    }
   },
   actions: {
     // your actions here
@@ -97,5 +113,10 @@ const store = createStore({
   },
   plugins: [createPersistedState()],
 })
+
+const getPlayUrl = async (id) => {
+  const response = await axios.get(`http://localhost:3000/song/url?id=${id}`)
+  return response.data.data.url
+}
 
 export default store

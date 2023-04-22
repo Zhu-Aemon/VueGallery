@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-20 mb-24">
+  <div class="mt-20 mb-28">
     <div class="items-center flex">
       <div
         class="bg-gray-50 shadow-lg ml-20 inline-block px-14 py-4 rounded-[20px] items-center"
@@ -83,31 +83,47 @@
           <tr
             class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
             v-if="songs"
-            v-for="(song, index) in songs.slice(0, 5)"
+            v-for="(song, index) in songs"
           >
             <th
               class="p-3 text-sm text-gray-900 text-left font-medium select-none"
+              @dblclick='songDblClickedRecommend(song)'
             >
               <span class="cursor-pointer">{{ song.name }}</span>
             </th>
             <td
               class="p-3 text-sm text-gray-700 select-none"
             >
-              <span v-for="ar in song.ar" v-if="song.ar.length > 1" class="cursor-pointer hover:underline hover:text-blue-600">
+              <span v-for="ar in song.ar" v-if="song.ar.length > 1" class="cursor-pointer hover:underline hover:text-blue-600" @click='showArtist(ar.name)'>
                 {{ ar.name }} /
               </span>
-              <span v-else class="cursor-pointer hover:underline hover:text-blue-600">
+              <span v-else class="cursor-pointer hover:underline hover:text-blue-600" @click='showArtist(song.ar[0].name)'>
                 {{ song.ar[0].name }}
               </span>
             </td>
             <td class="p-3 text-sm text-gray-700 select-none">
-              <span class="cursor-pointer hover:underline hover:text-blue-600">{{ song.al.name }}</span>
+              <span class="cursor-pointer hover:underline hover:text-blue-600" @click='showAlbum(song.al.name, joinNames(song.ar))'>{{ song.al.name }}</span>
             </td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+    <div class='ml-20 mb-4 text-2xl font-bold'>{{ username }} 的歌单</div>
+    <div class="grid grid-cols-5 gap-x-12 gap-y-12 ml-20 mr-20">
+      <div v-for='(pl, index) in playlist'>
+        <img class="h-auto max-w-full rounded-[20px] cursor-pointer" :src="pl.coverImgUrl" alt=""
+        >
+        <div class='font-bold text-base'>
+          {{ pl.name }}
+        </div>
+        <div class='font-medium text-sm'>
+          by {{ pl.creator.nickname }}
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -126,12 +142,15 @@ const userId = computed(() => store.state.userId)
 const avatarUrl = computed(() => store.state.userAvatar)
 const createTime = computed(() => store.state.createTime)
 const userCookie = computed(() => store.state.userCookie)
+const artist = computed(() => store.state.currentSongArtist)
+const album = computed(() => store.state.currentSongAlbum)
 
 const level = ref(0)
 const listened = ref(0)
 const createDayS = ref(0)
 const songs = ref(null)
 const likeList = ref(null)
+const playlist = ref(null)
 
 const get_user_info = async () => {
   const cookie = userCookie.value
@@ -174,7 +193,7 @@ const getRecommendedDaily = async () => {
       cookie,
     },
   })
-  console.log(response.data)
+  // console.log(response.data)
   songs.value = response.data.data.dailySongs
 }
 
@@ -183,6 +202,7 @@ onMounted(() => {
   get_detail()
   getRecommendedDaily()
   get_user_likeList()
+  getUserPlayList()
 })
 
 const logout = async () => {
@@ -215,6 +235,54 @@ const get_user_likeList = async () => {
   })
   // console.log(response.data)
   likeList.value = response.data.ids
+}
+
+const songDblClickedRecommend = (song) => {
+  store.commit('setPlayLocal', false)
+  store.commit('setCurrentMetadata', {
+    name: song.name,
+    album: song.al.name,
+    artist: joinNames(song.ar)
+  })
+  store.commit('setNeteaseList', songs.value)
+  store.commit('setCurrentSong', song)
+}
+
+function joinNames(arr) {
+  // 使用map方法获取每个对象的name属性，然后使用join方法将它们连接起来
+  return arr.map(item => item.name).join('/');
+}
+
+const showArtist = (artist) => {
+  router.push({
+    name: 'artistPage',
+    query: {
+      artist: artist,
+    },
+  })
+}
+
+const showAlbum = (album, artist) => {
+  router.push({
+    name: 'albumPage',
+    query: {
+      album: album,
+      artist: artist,
+    },
+  })
+}
+
+const getUserPlayList = async () => {
+  const cookie = userCookie.value
+  const response = await axios({
+    url:`http://localhost:3000/user/playlist?uid=${userId.value}`,
+    method: 'post',
+    data: {
+      cookie,
+    },
+  })
+  playlist.value = response.data.playlist
+  console.log(response.data.playlist)
 }
 </script>
 

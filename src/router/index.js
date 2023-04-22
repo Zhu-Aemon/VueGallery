@@ -3,7 +3,6 @@ import HomeView from '@/views/HomeView.vue'
 import LocalSongs from '@/views/LocalSongs.vue'
 import ArtistPage from '../views/ArtistPage.vue'
 import ExplorePage from '../views/ExplorePage.vue'
-import StatPage from '../views/StatPage.vue'
 import AlbumPage from '../views/AlbumPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 

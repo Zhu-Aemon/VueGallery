@@ -345,7 +345,15 @@ let progressTime = ref(0)
 let intervalId = null
 let currentSong = computed(() => store.state.currentSong)
 let progressTimeDisplayed = ref(formatTime(progressTime))
-let currentPlayList = computed(() => store.state.songs)
+let currentPlayList = computed(
+  () => {
+    if (store.state.playLocal) {
+      return store.state.songs
+    } else {
+      return store.state.neteaseList
+    }
+  }
+)
 
 watch(artist, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -367,7 +375,17 @@ watch(album, (newValue, oldValue) => {
 
 watch(currentSong, (newValue, oldValue) => {
   progressTime.value = 0
-  readMetadataAndSetCover(newValue.path)
+  if (store.state.playLocal) {
+    readMetadataAndSetCover(newValue.path)
+  } else {
+    store.commit('setCurrentMetadata', {
+      name: newValue.name,
+      album: newValue.al.name,
+      artist: joinNames(newValue.ar),
+    })
+    const coverImg = document.getElementById('cover')
+    coverImg.src = newValue.al.picUrl
+  }
   if (intervalId !== null) {
     clearInterval(intervalId)
   }
@@ -378,6 +396,11 @@ watch(currentSong, (newValue, oldValue) => {
     }, 1000)
   }
 })
+
+function joinNames(arr) {
+  // 使用map方法获取每个对象的name属性，然后使用join方法将它们连接起来
+  return arr.map(item => item.name).join('/');
+}
 
 watch(playing, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -475,6 +498,7 @@ onMounted(() => {
 })
 
 const songEnd = () => {
+  console.log('end!')
   if (intervalId !== null) {
     clearInterval(intervalId)
   }

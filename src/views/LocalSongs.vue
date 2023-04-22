@@ -109,6 +109,7 @@ const searchQuery = computed(() => store.state.searchContent)
 
 const songDblClicked = (song) => {
   store.commit('setCurrentSong', song)
+  store.commit('setPlayLocal', true)
   // console.log('set currentSong as ', song.name)
 }
 

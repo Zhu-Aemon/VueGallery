@@ -2,12 +2,14 @@ import { computed, watch, defineEmits } from 'vue'
 import store from '@/store'
 import { Howl } from 'howler'
 import EventBus from '@/utils/eventBus'
+import axios from 'axios'
 
 const playing = computed(() => store.state.playing)
 const currentSong = computed(() => store.state.currentSong)
 const volume = computed(() => store.state.volume)
 const emit = defineEmits(['song-end'])
 let currentHowl = null
+const userCookie = computed(() => store.state.userCookie)
 
 watch(playing, (newValue, oldValue) => {
   if (newValue === true) {
@@ -31,10 +33,16 @@ const pauseMusic = () => {
   }
 }
 
-watch(currentSong, (newValue, oldValue) => {
+watch(currentSong, async (newValue, oldValue) => {
   // console.log('old value is ', oldValue)
   // console.log('currentSong changed to', newValue)
-  const url = `file://${newValue.path}`
+  let url = ''
+  if (store.state.playLocal) {
+    url = `file://${newValue.path}`
+  } else {
+    url = await getPlayUrl(newValue.id)
+    // console.log(url)
+  }
   const howl = new Howl({
     src: [url],
     html5: true,
@@ -57,3 +65,16 @@ watch(currentSong, (newValue, oldValue) => {
     playMusic()
   }
 })
+
+const getPlayUrl = async (id) => {
+  const cookie = userCookie.value
+  const response = await axios({
+    url: `http://localhost:3000/song/url?id=${id}`,
+    method: 'post',
+    data: {
+      cookie,
+    },
+  })
+  // console.log(response)
+  return response.data.data[0].url
+}
