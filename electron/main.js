@@ -1,6 +1,10 @@
 const { app, BrowserWindow, protocol } = require('electron')
 const path = require('path')
 const os = require('os')
+const { exec } = require('child_process')
+const { spawn } = require('child_process');
+
+const NODE_ENV = process.env.NODE_ENV
 
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } },
@@ -33,11 +37,38 @@ function createWindow() {
   mainWindow.setMenuBarVisibility(false)
 
   // 加载 index.html
-  mainWindow.loadURL('http://127.0.0.1:5173') // 此处跟electron官网路径不同，需要注意
+  mainWindow.loadURL(
+    NODE_ENV === 'development'
+      ? 'http://localhost:5173'
+      :`file://${path.join(__dirname, '../dist/index.html')}`
+  );
 
   // 打开开发工具
   // mainWindow.webContents.openDevTools()
 }
+
+// Get the absolute path of app.js
+const isPackaged = process.mainModule.filename.includes('app.asar');
+const apiPath = isPackaged
+  ? path.join(process.resourcesPath, 'netease-cloud-music-api', 'app.js')
+  : path.join(__dirname, '..', 'netease-cloud-music-api', 'app.js');
+
+console.log(apiPath);
+
+// Run the command using the absolute path of app.js
+const apiProcess = exec(`node ${apiPath}`);
+
+apiProcess.stdout.on('data', (data) => {
+  console.log(`stdout: ${data}`);
+});
+
+apiProcess.stderr.on('data', (data) => {
+  console.error(`stderr: ${data}`);
+});
+
+apiProcess.on('close', (code) => {
+  console.log(`child process exited with code ${code}`);
+});
 
 // 这段程序将会在 Electron 结束初始化
 // 和创建浏览器窗口的时候调用

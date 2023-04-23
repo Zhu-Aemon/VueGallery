@@ -175,6 +175,7 @@ const store = useStore()
 const router = useRouter()
 
 const loggedIn = computed(() => store.state.userLoggedIn)
+const userId = computed(() => store.state.userId)
 
 const search = (content) => {
   store.commit('setSearchContent', content)
@@ -185,7 +186,10 @@ const navigateToLocal = () => {
 }
 
 const navigateToExplore = () => {
-  // console.log(loggedIn.value)
+  if (userId.value === 0) {
+    store.commit('setLoginState', false)
+  }
+  console.log(loggedIn.value)
   if (!loggedIn.value) {
     router.push({ name: 'login' })
   } else {

@@ -3,12 +3,37 @@
   "version": "0.0.0",
   "main": "electron/main.js",
   "private": true,
+  "build": {
+    "appId": "com.your-website.gallery",
+    "productName": "Gallery",
+    "copyright": "Copyright © 2023 sersmile",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/**/*",
+      "netease-cloud-music-api/**/*",
+      "electron/**/*"
+    ],
+    "extraResources": [
+      "netease-cloud-music-api"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist_electron"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "electron": "wait-on tcp:5173 && electron .",
-    "electron:serve": "concurrently -k \"node netease-cloud-music-api/app.js\" \"yarn dev\" \"yarn electron\""
+    "electron": "wait-on tcp:5173 && cross-env NODE_ENV=development electron .",
+    "electron:serve": "concurrently -k \"node netease-cloud-music-api/app.js\" \"yarn dev\" \"yarn electron\"",
+    "electron:build": "vite build && electron-builder"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -31,14 +56,16 @@
     "vue-router": "^4.1.6",
     "vue-slider-component": "latest",
     "vuex": "next",
-    "vuex-persistedstate": "^4.1.0"
+    "vuex-persistedstate": "^4.1.0",
+    "which": "^3.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
     "autoprefixer": "^10.4.14",
     "concurrently": "^8.0.1",
+    "cross-env": "^7.0.3",
     "electron": "^24.1.1",
-    "flowbite": "^1.6.5",
+    "electron-builder": "^23.6.0",
     "postcss": "^8.4.21",
     "prettier": "2.8.7",
     "tailwindcss": "^3.3.1",

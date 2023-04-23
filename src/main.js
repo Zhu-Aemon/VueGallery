@@ -10,7 +10,6 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import 'tailwindcss/tailwind.css'
 import '@/utils/player.js'
 import '@/utils/metadata.js'
-// import './test.js'
 import '@/assets/main.css'
 
 const app = createApp(App)

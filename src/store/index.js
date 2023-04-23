@@ -17,7 +17,7 @@ const store = createStore({
     volume: 100,
     searchContent: '',
     componentKey: 0,
-    userLoggedIn: true,
+    userLoggedIn: false,
     userId: 0,
     userName: '',
     userAvatar: '',
