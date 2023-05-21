@@ -55,19 +55,53 @@ const apiPath = isPackaged
 
 console.log(apiPath);
 
-// Run the command using the absolute path of app.js
-const apiProcess = exec(`node ${apiPath}`);
+// Check if the port is open and kill the process if necessary
+const port = 3000;
+const command = process.platform === 'win32' ? 'netstat' : 'lsof';
+const args = process.platform === 'win32' ? ['-a', '-n', '-o'] : ['-i', `:${port}`];
 
-apiProcess.stdout.on('data', (data) => {
-  console.log(`stdout: ${data}`);
+const checkPort = spawn(command, args);
+
+checkPort.stdout.on('data', (data) => {
+  const output = data.toString();
+  const regex = new RegExp(`:${port}.*?LISTENING.*?(\\d+)`, 'g');
+  let match;
+
+  while ((match = regex.exec(output)) !== null) {
+    const pid = match[1];
+
+    if (pid === '0') {
+      console.log('Skipping process with PID 0.');
+      continue;
+    }
+
+    const killCommand = process.platform === 'win32' ? `taskkill /PID ${pid} /F` : `kill ${pid}`;
+
+    exec(killCommand, (err, stdout, stderr) => {
+      if (err) {
+        console.error(`Error killing process ${pid}: ${err.message}`);
+      } else {
+        console.log(`Process ${pid} killed.`);
+      }
+    });
+  }
 });
 
-apiProcess.stderr.on('data', (data) => {
-  console.error(`stderr: ${data}`);
-});
+checkPort.on('close', () => { 
+  // Run the command using the absolute path of app.js
+  const apiProcess = exec(`node ${apiPath}`);
 
-apiProcess.on('close', (code) => {
-  console.log(`child process exited with code ${code}`);
+  apiProcess.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
+  apiProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  apiProcess.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
 });
 
 // 这段程序将会在 Electron 结束初始化
