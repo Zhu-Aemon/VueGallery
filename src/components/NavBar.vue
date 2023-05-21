@@ -7,15 +7,12 @@
     >
       <!-- Icon and Page Title-->
       <a class="flex items-left">
-        <img
-          alt="Gallery Logo"
-          class="h-8 mr-3"
-          src="https://flowbite.com/docs/images/logo.svg"
-        />
-        <span
-          class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-          >Gallery</span
-        >
+	      <span class="self-center px-4 py-1 cursor-pointer hover:bg-gray-200 hover:rounded-xl" @click="navigateBack">
+		      <i class="fa-sharp fa-solid fa-arrow-left fa-lg"></i>
+	      </span>
+	      <span class="self-center px-4 py-1 cursor-pointer hover:bg-gray-200 hover:rounded-xl" @click="navigateForward">
+		      <i class="fa-solid fa-arrow-right fa-lg"></i>
+	      </span>
       </a>
       <!-- Search Bar SR-ONLY-->
       <div class="flex md:order-2">
@@ -130,34 +127,12 @@
           <li>
             <a
               :class="
-                $route.name === 'home'
-                  ? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500'
-                  : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
-              "
-              @click="navigateToHome"
-              >About</a
-            >
-          </li>
-          <li>
-            <a
-              :class="
-                $route.name === 'songList'
-                  ? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500'
-                  : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
-              "
-              @click="navigateToLocal"
-              >Local</a
-            >
-          </li>
-          <li>
-            <a
-              :class="
                 $route.name === 'explorePage'
                   ? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500'
                   : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
               "
               @click="navigateToExplore"
-              >Explore</a
+              >资源库</a
             >
           </li>
         </ul>
@@ -199,5 +174,13 @@ const navigateToExplore = () => {
 
 const navigateToHome = () => {
   router.push({ name: 'home' })
+}
+
+const navigateBack = () => {
+	router.go(-1)
+}
+
+const navigateForward = () => {
+	router.go(1)
 }
 </script>

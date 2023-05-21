@@ -11,7 +11,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/Homeview',
       name: 'home',
       component: HomeView,
     },
@@ -31,7 +31,7 @@ const router = createRouter({
       component: AlbumPage,
     },
     {
-      path: '/explorePage',
+      path: '/',
       name: 'explorePage',
       component: ExplorePage,
     },

@@ -67,10 +67,20 @@
         </div>
       </div>
     </div>
-    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
-    <div class="mt-4">
-      <div class="ml-20 text-2xl font-bold"><span class="cursor-pointer hover:underline hover:text-blue-600">每日推荐</span></div>
-      <div class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20">
+    <div class="mt-10">
+      <div class="ml-20 text-xl font-medium">
+	      <span :class="section === 'daily'
+	      ? 'cursor-pointer bg-gray-200 rounded-2xl py-2 px-4 text-blue-700 font-bold'
+				: 'cursor-pointer hover:bg-gray-200 hover:rounded-2xl py-2 px-4 font-bold'"
+	      @click="setDaily">每日推荐</span>
+	      <span :class="section === 'playlist'
+	      ? 'cursor-pointer bg-gray-200 rounded-2xl py-2 px-4 text-blue-700 font-bold ml-1'
+				: 'cursor-pointer hover:bg-gray-200 hover:rounded-2xl py-2 px-4 font-bold ml-1'"
+	      @click="setPlayList">所有播放列表</span>
+      </div>
+      <div class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20"
+           v-if="section === 'daily'"
+      >
         <table class="w-full textho-gray-500 dark:text-gray-400">
           <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
           <tr>
@@ -115,17 +125,17 @@
         </table>
       </div>
     </div>
-    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
-    <div class='ml-20 mb-4 text-2xl font-bold'>{{ username }} 的歌单</div>
-    <div class="grid grid-cols-5 gap-x-12 gap-y-12 ml-20 mr-20">
+    <div class="grid grid-cols-5 gap-x-12 gap-y-8 ml-20 mr-20 mt-8"
+         v-if="section === 'playlist'"
+    >
       <div v-for='(pl, index) in playlist'>
         <img class="h-auto max-w-full rounded-[20px] cursor-pointer" :src="pl.coverImgUrl" alt=""
              @click="showPlaylist(pl.id, pl.creator.nickname, pl.createTime, pl.coverImgUrl, pl.name)"
         >
-        <div class='font-bold text-base'>
+        <div class='font-bold text-base select-none'>
           {{ pl.name }}
         </div>
-        <div class='font-medium text-sm'>
+        <div class='font-medium text-sm text-gray-500 select-none'>
           by {{ pl.creator.nickname }}
         </div>
       </div>
@@ -151,6 +161,7 @@ const createTime = computed(() => store.state.createTime)
 const userCookie = computed(() => store.state.userCookie)
 const artist = computed(() => store.state.currentSongArtist)
 const album = computed(() => store.state.currentSongAlbum)
+const section = computed(() => store.state.exploreSection)
 
 const level = ref(0)
 const listened = ref(0)
@@ -303,6 +314,14 @@ const showPlaylist = (playlistId, nickname, createTime, cover, name) => {
       name: name,
     },
   })
+}
+
+const setDaily = () => {
+	store.commit('setSection', 'daily')
+}
+
+const setPlayList = () => {
+	store.commit('setSection', 'playlist')
 }
 
 </script>

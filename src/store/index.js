@@ -5,7 +5,7 @@ import axios from 'axios'
 const store = createStore({
   state: {
     showWelcomePage: true,
-    folderName: '',
+    folderName: [],
     songs: [],
     playing: false,
     currentSong: '',
@@ -25,10 +25,13 @@ const store = createStore({
     userCookie: '',
     playLocal: true,
     neteaseList: [],
+    exploreSection: '',
   },
   mutations: {
-    setFolderName(state, folderName) {
-      state.folderName = folderName
+    addFolderName(state, folderName) {
+      if (!state.folderName.includes(folderName)) {
+        state.folderName.push(folderName)
+      }
     },
     setSongs(state, songs) {
       state.songs = songs
@@ -103,6 +106,9 @@ const store = createStore({
     },
     setNeteaseList(state, list) {
       state.neteaseList = list
+    },
+    setSection(state, section) {
+      state.exploreSection = section
     }
   },
   actions: {
