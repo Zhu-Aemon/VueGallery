@@ -76,7 +76,7 @@
             </span>
           </td>
           <td class="p-3 text-sm text-gray-700 select-none">
-            <span class="cursor-pointer hover:underline hover:text-blue-600" @click='showAlbum(song.al.name, joinNames(song.ar))'>{{ song.al.name }}</span>
+            <span class="cursor-pointer hover:underline hover:text-blue-600" @click='showAlbum(song.al.id)'>{{ song.al.name }}</span>
           </td>
         </tr>
         </tbody>
@@ -148,12 +148,11 @@ const showArtist = (artist) => {
   })
 }
 
-const showAlbum = (album, artist) => {
+const showAlbum = (album) => {
   router.push({
     name: 'albumPage',
     query: {
       album: album,
-      artist: artist,
     },
   })
 }

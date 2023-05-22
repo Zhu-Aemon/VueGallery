@@ -121,7 +121,7 @@
 				>
             <span
 	            class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
-	            @click="showAlbum(song.album, song.artist)"
+	            @click="showAlbum(song.al.id)"
             >{{ song.al.name }}</span
             >
 				</td>
@@ -213,12 +213,11 @@ onMounted(async () => {
 	resizeObserver.observe(albumDescElement.value)
 })
 
-const showAlbum = (album, artist) => {
+const showAlbum = (album) => {
 	router.push({
 		name: 'albumPage',
 		query: {
 			album: album,
-			artist: artist,
 		},
 	})
 	console.log(artist)

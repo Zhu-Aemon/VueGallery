@@ -128,7 +128,7 @@
             </span>
             </td>
             <td class="p-3 text-sm text-gray-700 select-none">
-              <span class="cursor-pointer hover:underline hover:text-blue-600" @click='showAlbum(song.al.name, joinNames(song.ar))'>{{ song.al.name }}</span>
+              <span class="cursor-pointer hover:underline hover:text-blue-600" @click='showAlbum(song.al.id)'>{{ song.al.name }}</span>
             </td>
           </tr>
           </tbody>
@@ -139,13 +139,13 @@
          v-if="section === 'playlist'"
     >
       <div v-for='(pl, index) in playlist'>
-        <img class="h-auto max-w-full rounded-[20px] cursor-pointer" :src="pl.coverImgUrl" alt=""
+        <img class="h-auto max-w-full rounded-[30px] cursor-pointer" :src="pl.coverImgUrl" alt=""
              @click="showPlaylist(pl.id, pl.creator.nickname, pl.createTime, pl.coverImgUrl, pl.name)"
         >
-        <div class='font-bold text-base select-none'>
+        <div class='ml-2 mt-0.5 font-bold text-base select-none'>
           {{ pl.name }}
         </div>
-        <div class='font-medium text-sm text-gray-500 select-none'>
+        <div class='ml-2 font-medium text-sm text-gray-500 select-none'>
           by {{ pl.creator.nickname }}
         </div>
       </div>
@@ -290,12 +290,11 @@ const showArtist = (artistId) => {
   })
 }
 
-const showAlbum = (album, artist) => {
+const showAlbum = (album) => {
   router.push({
     name: 'albumPage',
     query: {
       album: album,
-      artist: artist,
     },
   })
 }

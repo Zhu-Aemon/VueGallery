@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import LocalSongs from '@/views/LocalSongs.vue'
 import ArtistPage from '../views/ArtistPage.vue'
 import ExplorePage from '../views/ExplorePage.vue'
 import AlbumPage from '../views/AlbumPage.vue'
@@ -14,11 +13,6 @@ const router = createRouter({
       path: '/Homeview',
       name: 'home',
       component: HomeView,
-    },
-    {
-      path: '/songList',
-      name: 'songList',
-      component: LocalSongs,
     },
     {
       path: '/artistPage',

@@ -18,7 +18,7 @@
           </div>
           <div class="font-medium ml-12 mt-1 text-sm text-black">
             <span>{{
-              `评论数：${albumComment || 0} 分享数：${albumShare}`
+              `评论数：${commentCount || 0}`
             }}</span>
           </div>
           <div class="font-medium ml-12 mt-1 text-sm text-black">
@@ -31,7 +31,7 @@
             class="font-bold ml-12 mt-3 text-sm text-black max-h-limited line-clamp-limited overflow-hidden relative"
             ref="albumDescElement"
           >
-            {{ albumDesc }}
+            {{ albumDetail }}
           </div>
           <button
             v-if="isTruncated"
@@ -52,7 +52,7 @@
               @click.stop
             >
               <p class="font-bold text-2xl">{{ albumName }}</p>
-              <p class="font-medium text-2xs mt-3">{{ albumDesc }}</p>
+              <p class="font-medium text-2xs mt-3">{{ albumDetail }}</p>
               <button
                 class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
                 @click="toggleFullDesc"
@@ -65,8 +65,8 @@
       </li>
     </div>
   </div>
-  <h1 class="text-2xl font-bold ml-20">本地单曲</h1>
-  <div class="rounded-lg shadow ml-20 mr-20 mt-6">
+  <h1 class="text-2xl font-bold ml-20">单曲</h1>
+  <div class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20 mb-8">
     <table class="w-full text-gray-500 dark:text-gray-400">
       <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
         <tr>
@@ -87,58 +87,54 @@
       <tbody class="divide-y bg-white">
         <tr
           class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-          v-for="(song, index) in songs"
+          v-for="(song, index) in albumSongs"
         >
           <th
             class="p-3 text-sm text-gray-900 whitespace-nowrap text-left font-medium select-none"
-            :key="index"
             @dblclick="songDblClicked(song)"
-            v-if="song && song.album === route.query.album"
           >
-            <span class="cursor-pointer">{{ song.title }}</span>
+            <span class="cursor-pointer">{{ song.name }}</span>
           </th>
           <td
             class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-            v-if="song && song.album === route.query.album"
           >
             <span
-              class="lg:hover:text-blue-600 lg:hover:underline"
-              v-if="song.artist.includes('/') || song.artist.includes('&')"
-              v-for="(artist, index) in processedArtists(song)"
-              @click="showArtist(artist)"
+	            v-for="(artist, index) in song.ar"
+	            v-if="song.ar.length === 1"
+	            class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
+	            @click="showArtist(artist.id)"
             >
-              {{ artist }} /
+              {{ artist.name }}
             </span>
-            <span
-              class="lg:hover:text-blue-600 lg:hover:underline"
-              v-else
-              @click="showArtist(song.artist)"
-            >
-              {{ song.artist }}
+	          <span
+		          v-for="(artist, index) in song.ar"
+		          v-else
+	          >
+		          <span class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
+		                @click="showArtist(artist.id)">{{ artist.name }}</span>
+		          <span v-if="index !== song.ar.length - 1"> / </span>
             </span>
           </td>
           <td
             class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-            v-if="song && song.album === route.query.album"
           >
             <span
               class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
-              @click="showAlbum(song.album)"
-              >{{ song.album }}</span
+              @click="showAlbum(song.al.id)"
+              >{{ song.al.name }}</span
             >
           </td>
           <td
             class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-            v-if="song && song.album === route.query.album"
           >
-            {{ formatTime(song.duration) }}
+            {{ formatTime(song.dt / 1000) }}
           </td>
         </tr>
       </tbody>
     </table>
   </div>
   <h1 class="text-2xl font-bold ml-20 mt-5">网易云评论</h1>
-  <div class="rounded-lg shadow ml-20 mr-20 mt-6 mb-28">
+  <div class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20 mb-28">
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -197,30 +193,23 @@ let resizeObserver = null
 let artistData = ref({})
 let artistDetail = ref({})
 let artistId = ref(0)
-let albumDetail = ref({})
+let albumDetail = ref(null)
 let comments = ref({})
 let isTruncated = ref(false)
 let showPopup = ref(false)
 const albumDescElement = ref(null)
 
 const songs = computed(() => store.state.songs)
-const picURL = computed(
-  () =>
-    artistDetail.value?.album?.picUrl ||
-    'https://flowbite.com/docs/images/logo.svg'
-)
-const publishDate = computed(() => artistDetail.value?.album?.publishTime)
-const trackNumber = computed(() => artistDetail.value?.album?.size)
-const albumName = computed(
-  () => artistDetail.value?.album?.name || '404 NOT FOUND'
-)
+const picURL = ref(null)
+const publishDate = ref(0)
+const trackNumber = ref(0)
+const albumName = ref(null)
 const albumDesc = computed(() => artistDetail.value?.album?.description || '')
-const albumArtist = computed(
-  () => artistDetail.value?.album?.artists[0].name || ''
-)
-const albumComment = computed(() => albumDetail.value?.commentCount)
-const albumShare = computed(() => albumDetail.value?.shareCount)
+const albumArtist = ref(null)
 const hotComments = computed(() => comments.value.hotComments)
+const albumId = ref(0)
+const commentCount = ref(0)
+const albumSongs = ref()
 
 const processedArtists = (song) => {
   if (song.artist.includes('/')) {
@@ -231,61 +220,28 @@ const processedArtists = (song) => {
   return [song.artist]
 }
 
-onMounted(() => {
-  const artist = route.query.album
-  const artistName = route.query.artist
+onMounted(async () => {
+	albumId.value = route.query.album
 
-  // http://localhost:3000/cloudsearch?keywords=keyword&type=10
-  // 100: 专辑
-  axios
-    .get(
-      `http://localhost:3000/cloudsearch?keywords=${encodeURIComponent(
-        artist
-      )}&type=10&limit=100`
-    )
-    .then((response) => {
-      // console.log(response)
-      artistData.value = response.data
-      for (const al of artistData.value.result.albums) {
-        // console.log(artistName, al.artist.name)
-        if (artistName.includes(al.artist.name)) {
-          artistId.value = al.id
-          // console.log(artistId.value)
-          return true
-        }
-      }
-      // console.log(artistData.result.artists[0].id)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+	await axios.get(`http://localhost:3000/album/album?id=${albumId.value}`).then((response) => {
+		albumDetail.value = response.data.album.description
+		console.log(response.data)
+		picURL.value = response.data.album.picUrl
+		commentCount.value = response.data.album.info.commentCount
+		albumName.value = response.data.album.name
+		albumArtist.value = response.data.album.artist.name
+		publishDate.value = response.data.album.publishTime
+		trackNumber.value = response.data.songs.length
+		albumSongs.value = response.data.songs
+	})
 
-  watch(artistId, (newValue, oldValue) => {
-    if (newValue !== 0) {
-      // http://localhost:3000/album?id=id
-      axios
-        .get(`http://localhost:3000/album?id=${artistId.value}`)
-        .then((response) => {
-          // console.log(response)
-          artistDetail.value = response.data
-          // console.log(artistDetail.value.album)
-        })
+	await axios
+		.get(`http://localhost:3000/comment/album?id=${albumId.value}`)
+		.then((response) => {
+			comments.value = response.data
+			// console.log(comments.value.hotComments[0])
+		})
 
-      axios
-        .get(`http://localhost:3000/album/detail/dynamic?id=${artistId.value}`)
-        .then((response) => {
-          albumDetail.value = response.data
-          // console.log(albumDetail.value.commentCount)
-        })
-
-      axios
-        .get(`http://localhost:3000/comment/album?id=${artistId.value}`)
-        .then((response) => {
-          comments.value = response.data
-          // console.log(comments.value.hotComments[0])
-        })
-    }
-  })
   if (!('ResizeObserver' in window)) return
 
   checkIfTruncated()
