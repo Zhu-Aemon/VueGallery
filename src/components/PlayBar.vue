@@ -204,47 +204,24 @@
     </div>
     <!-- 4 right buttons-->
     <div class="items-center justify-center hidden ml-auto md:flex">
-      <!-- View PlayList Button-->
+      <!-- LIKE Button-->
       <button
-        v-if="false"
         class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
         type="button"
+        v-if="!songLiked"
+        @click="likeMusic"
       >
-        <svg
-          aria-hidden="true"
-          class="w-5 h-5 text-gray-500 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            clip-rule="evenodd"
-            d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-            fill-rule="evenodd"
-          ></path>
-        </svg>
-        <span class="sr-only">View playlist</span>
+	      <i class="fa-regular fa-heart fa-lg"></i>
       </button>
-      <!-- ??Show Caption-->
+      <!-- ?liked button-->
       <button
-        v-if="false"
         class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
         data-tooltip-target="tooltip-captions"
         type="button"
+        v-if="songLiked"
+        @click="cancelLike"
       >
-        <svg
-          aria-hidden="true"
-          class="w-5 h-5 text-gray-500 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white"
-          fill="currentColor"
-          viewBox="0 0 576 512"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M0 96C0 60.7 28.7 32 64 32H512c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM200 208c14.2 0 27 6.1 35.8 16c8.8 9.9 24 10.7 33.9 1.9s10.7-24 1.9-33.9c-17.5-19.6-43.1-32-71.5-32c-53 0-96 43-96 96s43 96 96 96c28.4 0 54-12.4 71.5-32c8.8-9.9 8-25-1.9-33.9s-25-8-33.9 1.9c-8.8 9.9-21.6 16-35.8 16c-26.5 0-48-21.5-48-48s21.5-48 48-48zm144 48c0-26.5 21.5-48 48-48c14.2 0 27 6.1 35.8 16c8.8 9.9 24 10.7 33.9 1.9s10.7-24 1.9-33.9c-17.5-19.6-43.1-32-71.5-32c-53 0-96 43-96 96s43 96 96 96c28.4 0 54-12.4 71.5-32c8.8-9.9 8-25-1.9-33.9s-25-8-33.9 1.9c-8.8 9.9-21.6 16-35.8 16c-26.5 0-48-21.5-48-48z"
-            fill="currentColor"
-          />
-        </svg>
-        <span class="sr-only">Captions</span>
+	      <i class="fa-solid fa-heart fa-lg"></i>
       </button>
       <div
         id="tooltip-captions"
@@ -330,6 +307,7 @@ import { computed, watch, ref, onMounted } from 'vue'
 import readMetadataAndSetCover from '../utils/metadata'
 import formatTime from '../utils/timeParse'
 import EventBus from '@/utils/eventBus'
+import axios from "axios";
 
 const store = useStore()
 
@@ -344,7 +322,11 @@ let displayTime = ref(formatTime(duration.value))
 let progressTime = ref(0)
 let intervalId = null
 let currentSong = computed(() => store.state.currentSong)
+const liked = ref(false)
 let progressTimeDisplayed = ref(formatTime(progressTime))
+const likeList = ref([])
+const userCookie = computed(() => store.state.userCookie)
+const userId = computed(() => store.state.userId)
 let currentPlayList = computed(
   () => {
     if (store.state.playLocal) {
@@ -493,15 +475,70 @@ const playNext = () => {
   }
 }
 
-onMounted(() => {
+onMounted(async () => {
   EventBus.on('song-end', songEnd)
+	await getLikeList()
 })
 
 const songEnd = () => {
-  console.log('end!')
+  // console.log('end!')
   if (intervalId !== null) {
     clearInterval(intervalId)
   }
   playNext()
+}
+
+const likeMusic = async () => {
+	const cookie = userCookie.value
+	const response = await axios({
+		url: `http://localhost:3000/like?id=${currentSong.value.id}&timestamp=${Date.now()}`,
+		method: 'post',
+		data: {
+			cookie,
+		},
+	})
+	// console.log(response)
+	await getLikeList()
+}
+
+const getLikeList = async () => {
+	const cookie = userCookie.value
+	const response = await axios({
+		url: `http://localhost:3000/likelist?uid=${userId.value}&timestamp=${Date.now()}`,
+		method: 'post',
+		data: {
+			cookie,
+		},
+	})
+	// console.log(response)
+	likeList.value = response.data.ids
+	// console.log(likeList.value)
+
+	// const response1 = await axios({
+	// 	url: `http://localhost:3000/song/detail?ids=${currentSong.value.id}`,
+	// 	method: 'post',
+	// 	data: {
+	// 		cookie,
+	// 	},
+	// })
+	// console.log(response1)
+}
+
+const songLiked = computed(() => {
+	// console.log(currentSong.value.id)
+	return likeList.value.includes(currentSong.value.id)
+})
+
+const cancelLike = async () => {
+	const cookie = userCookie.value
+	const response = await axios({
+		url: `http://localhost:3000/like?id=${currentSong.value.id}&like=false&timestamp=${Date.now()}`,
+		method: 'post',
+		data: {
+			cookie,
+		},
+	})
+	console.log(response)
+	await getLikeList()
 }
 </script>

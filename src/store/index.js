@@ -40,7 +40,7 @@ const store = createStore({
       state.playing = !state.playing
     },
     setCurrentSong(state, currentSong) {
-      console.log('set current!')
+      // console.log('set current!')
       state.currentSong = currentSong
       let url = ''
       if (state.playLocal) {

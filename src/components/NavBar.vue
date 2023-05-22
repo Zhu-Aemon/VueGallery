@@ -164,7 +164,7 @@ const navigateToExplore = () => {
   if (userId.value === 0) {
     store.commit('setLoginState', false)
   }
-  console.log(loggedIn.value)
+  // console.log(loggedIn.value)
   if (!loggedIn.value) {
     router.push({ name: 'login' })
   } else {

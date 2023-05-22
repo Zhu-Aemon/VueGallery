@@ -110,12 +110,22 @@
             <td
               class="p-3 text-sm text-gray-700 select-none"
             >
-              <span v-for="ar in song.ar" v-if="song.ar.length > 1" class="cursor-pointer hover:underline hover:text-blue-600" @click='showArtist(ar.name)'>
-                {{ ar.name }} /
-              </span>
-              <span v-else class="cursor-pointer hover:underline hover:text-blue-600" @click='showArtist(song.ar[0].name)'>
-                {{ song.ar[0].name }}
-              </span>
+              <span
+	              v-for="(artist, index) in song.ar"
+	              v-if="song.ar.length === 1"
+	              class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
+	              @click="showArtist(artist.id)"
+              >
+              {{ artist.name }}
+            </span>
+	            <span
+		            v-for="(artist, index) in song.ar"
+		            v-else
+	            >
+		          <span class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
+		                @click="showArtist(artist.id)">{{ artist.name }}</span>
+		          <span v-if="index !== song.ar.length - 1"> / </span>
+            </span>
             </td>
             <td class="p-3 text-sm text-gray-700 select-none">
               <span class="cursor-pointer hover:underline hover:text-blue-600" @click='showAlbum(song.al.name, joinNames(song.ar))'>{{ song.al.name }}</span>
@@ -219,7 +229,7 @@ onMounted(() => {
   get_user_info()
   get_detail()
   getRecommendedDaily()
-  get_user_likeList()
+  // get_user_likeList()
   getUserPlayList()
 })
 
@@ -271,11 +281,11 @@ function joinNames(arr) {
   return arr.map(item => item.name).join('/');
 }
 
-const showArtist = (artist) => {
+const showArtist = (artistId) => {
   router.push({
     name: 'artistPage',
     query: {
-      artist: artist,
+      artist: artistId,
     },
   })
 }
@@ -300,7 +310,7 @@ const getUserPlayList = async () => {
     },
   })
   playlist.value = response.data.playlist
-  console.log(response.data.playlist)
+  // console.log(response.data.playlist)
 }
 
 const showPlaylist = (playlistId, nickname, createTime, cover, name) => {
