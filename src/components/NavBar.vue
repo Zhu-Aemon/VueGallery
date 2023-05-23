@@ -7,12 +7,18 @@
     >
       <!-- Icon and Page Title-->
       <a class="flex items-left">
-	      <span class="self-center px-4 py-1 cursor-pointer hover:bg-gray-200 hover:rounded-xl" @click="navigateBack">
-		      <i class="fa-sharp fa-solid fa-arrow-left fa-lg"></i>
-	      </span>
-	      <span class="self-center px-4 py-1 cursor-pointer hover:bg-gray-200 hover:rounded-xl" @click="navigateForward">
-		      <i class="fa-solid fa-arrow-right fa-lg"></i>
-	      </span>
+        <span
+          class="self-center px-4 py-1 cursor-pointer hover:bg-gray-200 hover:rounded-xl"
+          @click="navigateBack"
+        >
+          <i class="fa-sharp fa-solid fa-arrow-left fa-lg"></i>
+        </span>
+        <span
+          class="self-center px-4 py-1 cursor-pointer hover:bg-gray-200 hover:rounded-xl"
+          @click="navigateForward"
+        >
+          <i class="fa-solid fa-arrow-right fa-lg"></i>
+        </span>
       </a>
       <!-- Search Bar SR-ONLY-->
       <div class="flex md:order-2">
@@ -135,17 +141,28 @@
               >资源库</a
             >
           </li>
-	        <li>
-		        <a
-			        :class="
+          <li>
+            <a
+              :class="
                 $route.name === 'trending'
                   ? 'select-none text-blue-600 inline-block bg-gray-100 px-2 rounded-xl py-1 cursor-pointer'
                   : 'select-none text-black inline-block hover:bg-gray-100 hover:rounded-xl px-2 py-1 cursor-pointer'
               "
-			        @click="navigateToTrending"
-		        >时下流行</a
-		        >
-	        </li>
+              @click="navigateToTrending"
+              >时下流行</a
+            >
+          </li>
+          <li>
+            <a
+              :class="
+                $route.name === 'recommended'
+                  ? 'select-none text-blue-600 inline-block bg-gray-100 px-2 rounded-xl py-1 cursor-pointer'
+                  : 'select-none text-black inline-block hover:bg-gray-100 hover:rounded-xl px-2 py-1 cursor-pointer'
+              "
+              @click="navigateToRecommended"
+            >为你推荐</a
+            >
+          </li>
         </ul>
       </div>
     </div>
@@ -188,14 +205,18 @@ const navigateToHome = () => {
 }
 
 const navigateBack = () => {
-	router.go(-1)
+  router.go(-1)
 }
 
 const navigateForward = () => {
-	router.go(1)
+  router.go(1)
 }
 
 const navigateToTrending = () => {
-	router.push({ name: 'trending'})
+  router.push({ name: 'trending' })
+}
+
+const navigateToRecommended = () => {
+  router.push({ name: 'recommended'})
 }
 </script>

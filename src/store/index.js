@@ -109,7 +109,7 @@ const store = createStore({
     },
     setSection(state, section) {
       state.exploreSection = section
-    }
+    },
   },
   actions: {
     // your actions here

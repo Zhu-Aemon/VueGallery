@@ -17,9 +17,7 @@
             <span class="font-bold">{{ `${albumArtist}` }}</span>
           </div>
           <div class="font-medium ml-12 mt-1 text-sm text-black">
-            <span>{{
-              `评论数：${commentCount || 0}`
-            }}</span>
+            <span>{{ `评论数：${commentCount || 0}` }}</span>
           </div>
           <div class="font-medium ml-12 mt-1 text-sm text-black">
             <span v-if="trackNumber > 1">{{
@@ -66,7 +64,9 @@
     </div>
   </div>
   <h1 class="text-2xl font-bold ml-20">单曲</h1>
-  <div class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20 mb-8">
+  <div
+    class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20 mb-8"
+  >
     <table class="w-full text-gray-500 dark:text-gray-400">
       <thead class="bg-gray-100 border-b-2 border-gray-200 text-gray-700">
         <tr>
@@ -95,38 +95,32 @@
           >
             <span class="cursor-pointer">{{ song.name }}</span>
           </th>
-          <td
-            class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-          >
+          <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none">
             <span
-	            v-for="(artist, index) in song.ar"
-	            v-if="song.ar.length === 1"
-	            class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
-	            @click="showArtist(artist.id)"
+              v-for="(artist, index) in song.ar"
+              v-if="song.ar.length === 1"
+              class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
+              @click="showArtist(artist.id)"
             >
               {{ artist.name }}
             </span>
-	          <span
-		          v-for="(artist, index) in song.ar"
-		          v-else
-	          >
-		          <span class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
-		                @click="showArtist(artist.id)">{{ artist.name }}</span>
-		          <span v-if="index !== song.ar.length - 1"> / </span>
+            <span v-for="(artist, index) in song.ar" v-else>
+              <span
+                class="lg:hover:text-blue-600 lg:hover:underline cursor-pointer"
+                @click="showArtist(artist.id)"
+                >{{ artist.name }}</span
+              >
+              <span v-if="index !== song.ar.length - 1"> / </span>
             </span>
           </td>
-          <td
-            class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-          >
+          <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none">
             <span
               class="cursor-pointer lg:hover:text-blue-600 lg:hover:underline"
               @click="showAlbum(song.al.id)"
               >{{ song.al.name }}</span
             >
           </td>
-          <td
-            class="p-3 text-sm text-gray-700 whitespace-nowrap select-none"
-          >
+          <td class="p-3 text-sm text-gray-700 whitespace-nowrap select-none">
             {{ formatTime(song.dt / 1000) }}
           </td>
         </tr>
@@ -134,7 +128,9 @@
     </table>
   </div>
   <h1 class="text-2xl font-bold ml-20 mt-5">网易云评论</h1>
-  <div class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20 mb-28">
+  <div
+    class="relative overflow-auto custom-scrollbar rounded-lg shadow mt-6 ml-20 mr-20 mb-28"
+  >
     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
       <thead
         class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
@@ -221,26 +217,28 @@ const processedArtists = (song) => {
 }
 
 onMounted(async () => {
-	albumId.value = route.query.album
+  albumId.value = route.query.album
 
-	await axios.get(`http://localhost:3000/album/album?id=${albumId.value}`).then((response) => {
-		albumDetail.value = response.data.album.description
-		// console.log(response.data)
-		picURL.value = response.data.album.picUrl
-		commentCount.value = response.data.album.info.commentCount
-		albumName.value = response.data.album.name
-		albumArtist.value = response.data.album.artist.name
-		publishDate.value = response.data.album.publishTime
-		trackNumber.value = response.data.songs.length
-		albumSongs.value = response.data.songs
-	})
+  await axios
+    .get(`http://localhost:3000/album/album?id=${albumId.value}`)
+    .then((response) => {
+      albumDetail.value = response.data.album.description
+      // console.log(response.data)
+      picURL.value = response.data.album.picUrl
+      commentCount.value = response.data.album.info.commentCount
+      albumName.value = response.data.album.name
+      albumArtist.value = response.data.album.artist.name
+      publishDate.value = response.data.album.publishTime
+      trackNumber.value = response.data.songs.length
+      albumSongs.value = response.data.songs
+    })
 
-	await axios
-		.get(`http://localhost:3000/comment/album?id=${albumId.value}`)
-		.then((response) => {
-			comments.value = response.data
-			// console.log(comments.value.hotComments[0])
-		})
+  await axios
+    .get(`http://localhost:3000/comment/album?id=${albumId.value}`)
+    .then((response) => {
+      comments.value = response.data
+      // console.log(comments.value.hotComments[0])
+    })
 
   if (!('ResizeObserver' in window)) return
 

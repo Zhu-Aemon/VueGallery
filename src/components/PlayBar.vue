@@ -211,7 +211,7 @@
         v-if="!songLiked"
         @click="likeMusic"
       >
-	      <i class="fa-regular fa-heart fa-lg"></i>
+        <i class="fa-regular fa-heart fa-lg"></i>
       </button>
       <!-- ?liked button-->
       <button
@@ -221,7 +221,7 @@
         v-if="songLiked"
         @click="cancelLike"
       >
-	      <i class="fa-solid fa-heart fa-lg"></i>
+        <i class="fa-solid fa-heart fa-lg"></i>
       </button>
       <div
         id="tooltip-captions"
@@ -307,7 +307,7 @@ import { computed, watch, ref, onMounted } from 'vue'
 import readMetadataAndSetCover from '../utils/metadata'
 import formatTime from '../utils/timeParse'
 import EventBus from '@/utils/eventBus'
-import axios from "axios";
+import axios from 'axios'
 
 const store = useStore()
 
@@ -327,15 +327,13 @@ let progressTimeDisplayed = ref(formatTime(progressTime))
 const likeList = ref([])
 const userCookie = computed(() => store.state.userCookie)
 const userId = computed(() => store.state.userId)
-let currentPlayList = computed(
-  () => {
-    if (store.state.playLocal) {
-      return store.state.songs
-    } else {
-      return store.state.neteaseList
-    }
+let currentPlayList = computed(() => {
+  if (store.state.playLocal) {
+    return store.state.songs
+  } else {
+    return store.state.neteaseList
   }
-)
+})
 
 watch(artist, (newValue, oldValue) => {
   if (newValue !== oldValue) {
@@ -381,7 +379,7 @@ watch(currentSong, (newValue, oldValue) => {
 
 function joinNames(arr) {
   // 使用map方法获取每个对象的name属性，然后使用join方法将它们连接起来
-  return arr.map(item => item.name).join('/');
+  return arr.map((item) => item.name).join('/')
 }
 
 watch(playing, (newValue, oldValue) => {
@@ -477,7 +475,7 @@ const playNext = () => {
 
 onMounted(async () => {
   EventBus.on('song-end', songEnd)
-	await getLikeList()
+  await getLikeList()
 })
 
 const songEnd = () => {
@@ -489,56 +487,62 @@ const songEnd = () => {
 }
 
 const likeMusic = async () => {
-	const cookie = userCookie.value
-	const response = await axios({
-		url: `http://localhost:3000/like?id=${currentSong.value.id}&timestamp=${Date.now()}`,
-		method: 'post',
-		data: {
-			cookie,
-		},
-	})
-	// console.log(response)
-	await getLikeList()
+  const cookie = userCookie.value
+  const response = await axios({
+    url: `http://localhost:3000/like?id=${
+      currentSong.value.id
+    }&timestamp=${Date.now()}`,
+    method: 'post',
+    data: {
+      cookie,
+    },
+  })
+  // console.log(response)
+  await getLikeList()
 }
 
 const getLikeList = async () => {
-	const cookie = userCookie.value
-	const response = await axios({
-		url: `http://localhost:3000/likelist?uid=${userId.value}&timestamp=${Date.now()}`,
-		method: 'post',
-		data: {
-			cookie,
-		},
-	})
-	// console.log(response)
-	likeList.value = response.data.ids
-	// console.log(likeList.value)
+  const cookie = userCookie.value
+  const response = await axios({
+    url: `http://localhost:3000/likelist?uid=${
+      userId.value
+    }&timestamp=${Date.now()}`,
+    method: 'post',
+    data: {
+      cookie,
+    },
+  })
+  // console.log(response)
+  likeList.value = response.data.ids
+  // console.log(likeList.value)
 
-	// const response1 = await axios({
-	// 	url: `http://localhost:3000/song/detail?ids=${currentSong.value.id}`,
-	// 	method: 'post',
-	// 	data: {
-	// 		cookie,
-	// 	},
-	// })
-	// console.log(response1)
+  // const response1 = await axios({
+  // 	url: `http://localhost:3000/song/detail?ids=${currentSong.value.id}`,
+  // 	method: 'post',
+  // 	data: {
+  // 		cookie,
+  // 	},
+  // })
+  // console.log(response1)
 }
 
 const songLiked = computed(() => {
-	// console.log(currentSong.value.id)
-	return likeList.value.includes(currentSong.value.id)
+  // console.log(currentSong.value.id)
+  return likeList.value.includes(currentSong.value.id)
 })
 
 const cancelLike = async () => {
-	const cookie = userCookie.value
-	const response = await axios({
-		url: `http://localhost:3000/like?id=${currentSong.value.id}&like=false&timestamp=${Date.now()}`,
-		method: 'post',
-		data: {
-			cookie,
-		},
-	})
-	console.log(response)
-	await getLikeList()
+  const cookie = userCookie.value
+  const response = await axios({
+    url: `http://localhost:3000/like?id=${
+      currentSong.value.id
+    }&like=false&timestamp=${Date.now()}`,
+    method: 'post',
+    data: {
+      cookie,
+    },
+  })
+  console.log(response)
+  await getLikeList()
 }
 </script>

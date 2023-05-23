@@ -2,7 +2,7 @@ const { app, BrowserWindow, protocol } = require('electron')
 const path = require('path')
 const os = require('os')
 const { exec } = require('child_process')
-const { spawn } = require('child_process');
+const { spawn } = require('child_process')
 
 const NODE_ENV = process.env.NODE_ENV
 
@@ -40,69 +40,71 @@ function createWindow() {
   mainWindow.loadURL(
     NODE_ENV === 'development'
       ? 'http://localhost:5173'
-      :`file://${path.join(__dirname, '../dist/index.html')}`
-  );
+      : `file://${path.join(__dirname, '../dist/index.html')}`
+  )
 
   // 打开开发工具
   // mainWindow.webContents.openDevTools()
 }
 
 // Get the absolute path of app.js
-const isPackaged = process.mainModule.filename.includes('app.asar');
+const isPackaged = process.mainModule.filename.includes('app.asar')
 const apiPath = isPackaged
   ? path.join(process.resourcesPath, 'netease-cloud-music-api', 'app.js')
-  : path.join(__dirname, '..', 'netease-cloud-music-api', 'app.js');
+  : path.join(__dirname, '..', 'netease-cloud-music-api', 'app.js')
 
-console.log(apiPath);
+console.log(apiPath)
 
 // Check if the port is open and kill the process if necessary
-const port = 3000;
-const command = process.platform === 'win32' ? 'netstat' : 'lsof';
-const args = process.platform === 'win32' ? ['-a', '-n', '-o'] : ['-i', `:${port}`];
+const port = 3000
+const command = process.platform === 'win32' ? 'netstat' : 'lsof'
+const args =
+  process.platform === 'win32' ? ['-a', '-n', '-o'] : ['-i', `:${port}`]
 
-const checkPort = spawn(command, args);
+const checkPort = spawn(command, args)
 
 checkPort.stdout.on('data', (data) => {
-  const output = data.toString();
-  const regex = new RegExp(`:${port}.*?LISTENING.*?(\\d+)`, 'g');
-  let match;
+  const output = data.toString()
+  const regex = new RegExp(`:${port}.*?LISTENING.*?(\\d+)`, 'g')
+  let match
 
   while ((match = regex.exec(output)) !== null) {
-    const pid = match[1];
+    const pid = match[1]
 
     if (pid === '0') {
-      console.log('Skipping process with PID 0.');
-      continue;
+      console.log('Skipping process with PID 0.')
+      continue
     }
 
-    const killCommand = process.platform === 'win32' ? `taskkill /PID ${pid} /F` : `kill ${pid}`;
+    const killCommand =
+      process.platform === 'win32' ? `taskkill /PID ${pid} /F` : `kill ${pid}`
 
     exec(killCommand, (err, stdout, stderr) => {
       if (err) {
-        console.error(`Error killing process ${pid}: ${err.message}`);
+        console.error(`Error killing process ${pid}: ${err.message}`)
       } else {
-        console.log(`Process ${pid} killed.`);
+        console.log(`Process ${pid} killed.`)
       }
-    });
+    })
   }
-});
+})
 
-checkPort.on('close', () => { 
+checkPort.on('close', () => {
   // Run the command using the absolute path of app.js
-  const apiProcess = exec(`node ${apiPath}`);
+  const apiProcess = exec(`node ${apiPath}`)
 
   apiProcess.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
+    console.log(`stdout: ${data}`)
+  })
 
   apiProcess.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-  });
+    console.error(`stderr: ${data}`)
+  })
 
   apiProcess.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-  });
-});
+    console.log(`child process exited with code ${code}`)
+  })
+})
 
 // 这段程序将会在 Electron 结束初始化
 // 和创建浏览器窗口的时候调用

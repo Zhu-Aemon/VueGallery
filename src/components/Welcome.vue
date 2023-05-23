@@ -26,7 +26,7 @@
           无痛音乐管理
         </h1>
         <p class="text-lg font-normal text-gray-500 dark:text-gray-400 mb-6">
-	        高效管理本地电脑上的音乐文件，只需先设置音乐文件所对应的路径
+          高效管理本地电脑上的音乐文件，只需先设置音乐文件所对应的路径
         </p>
         <input
           ref="fileInput"
@@ -55,18 +55,17 @@
           </svg>
         </a>
       </div>
-	    <div class="mt-4">
-		    <div class="ml-4 text-gray-500 font-medium text-sm">
-			    音乐文件夹
-		    </div>
-		    <button @click="deleteLS">delete localstorage</button>
-		    <div class="mt-2 py-2 px-3 inline-block bg-gray-100 w-full rounded-[10px]"
-		         v-for="(folder, index) in folders"
-		    >
-			    {{folder}}
-			    {{folders}}
-		    </div>
-	    </div>
+      <div class="mt-4">
+        <div class="ml-4 text-gray-500 font-medium text-sm">音乐文件夹</div>
+        <button @click="deleteLS">delete localstorage</button>
+        <div
+          class="mt-2 py-2 px-3 inline-block bg-gray-100 w-full rounded-[10px]"
+          v-for="(folder, index) in folders"
+        >
+          {{ folder }}
+          {{ folders }}
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -133,6 +132,6 @@ const toggleDevDesc = () => {
 }
 
 const deleteLS = () => {
-	localStorage.clear()
+  localStorage.clear()
 }
 </script>
