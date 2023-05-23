@@ -128,13 +128,24 @@
             <a
               :class="
                 $route.name === 'explorePage'
-                  ? 'block py-2 pl-3 pr-4 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500'
-                  : 'block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700'
+                  ? 'select-none text-blue-600 inline-block bg-gray-100 px-2 rounded-xl py-1 cursor-pointer'
+                  : 'select-none text-black inline-block hover:bg-gray-100 hover:rounded-xl px-2 py-1 cursor-pointer'
               "
               @click="navigateToExplore"
               >资源库</a
             >
           </li>
+	        <li>
+		        <a
+			        :class="
+                $route.name === 'trending'
+                  ? 'select-none text-blue-600 inline-block bg-gray-100 px-2 rounded-xl py-1 cursor-pointer'
+                  : 'select-none text-black inline-block hover:bg-gray-100 hover:rounded-xl px-2 py-1 cursor-pointer'
+              "
+			        @click="navigateToTrending"
+		        >时下流行</a
+		        >
+	        </li>
         </ul>
       </div>
     </div>
@@ -182,5 +193,9 @@ const navigateBack = () => {
 
 const navigateForward = () => {
 	router.go(1)
+}
+
+const navigateToTrending = () => {
+	router.push({ name: 'trending'})
 }
 </script>

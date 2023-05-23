@@ -3,7 +3,7 @@
     <div
       class="items-center justify-start hidden px-20 py-6 text-gray-500 dark:text-gray-400 md:flex"
     >
-      <img alt="Cover" class="h-48 mr-3 rounded-xl" :src="picURL" />
+      <img alt="Cover" class="h-48 mr-3 rounded-[25px]" :src="picURL" />
       <li class="list-none">
         <div class="text-gray-600 dark:text-gray-400">
           <div class="text-base mb-5">
@@ -225,7 +225,7 @@ onMounted(async () => {
 
 	await axios.get(`http://localhost:3000/album/album?id=${albumId.value}`).then((response) => {
 		albumDetail.value = response.data.album.description
-		console.log(response.data)
+		// console.log(response.data)
 		picURL.value = response.data.album.picUrl
 		commentCount.value = response.data.album.info.commentCount
 		albumName.value = response.data.album.name

@@ -6,7 +6,7 @@
 			<img
 				:src="artistDetail.avatar"
 				alt="Cover"
-				class="h-48 mr-3 rounded-xl"
+				class="h-48 mr-3 rounded-[25px]"
 			/>
 			<li class="list-none">
 				<div class="text-gray-600 dark:text-gray-400">

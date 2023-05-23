@@ -5,6 +5,7 @@ import ExplorePage from '../views/ExplorePage.vue'
 import AlbumPage from '../views/AlbumPage.vue'
 import LoginPage from '../views/LoginPage.vue'
 import PlaylistPage from "../views/PlaylistPage.vue";
+import TrendingPage from "@/views/TrendingPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/playlist',
       name: 'playlist',
       component: PlaylistPage,
+    },
+    {
+      path: '/trending',
+      name: 'trending',
+      component: TrendingPage,
     },
   ],
 })

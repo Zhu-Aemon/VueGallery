@@ -3,7 +3,7 @@
     <div
       class="items-center justify-start hidden px-20 py-6 text-gray-500 dark:text-gray-400 md:flex"
     >
-      <img alt="Cover" class="h-48 mr-3 rounded-xl" :src="coverUrl" />
+      <img alt="Cover" class="h-48 mr-3 rounded-[25px]" :src="coverUrl" />
       <li class="list-none">
         <div class="text-gray-600 dark:text-gray-400">
           <div class="text-base mb-5">
