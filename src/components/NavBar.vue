@@ -181,11 +181,12 @@ const loggedIn = computed(() => store.state.userLoggedIn)
 const userId = computed(() => store.state.userId)
 
 const search = (content) => {
-  store.commit('setSearchContent', content)
-}
-
-const navigateToLocal = () => {
-  router.push({ name: 'songList' })
+  router.push({
+    name: 'searchResults',
+    query: {
+      content: content
+    }
+  })
 }
 
 const navigateToExplore = () => {

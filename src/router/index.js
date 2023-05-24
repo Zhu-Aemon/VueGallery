@@ -7,6 +7,7 @@ import LoginPage from '../views/LoginPage.vue'
 import PlaylistPage from '../views/PlaylistPage.vue'
 import TrendingPage from '@/views/TrendingPage.vue'
 import Recommended from "@/views/Recommended.vue";
+import SearchResults from "@/views/SearchResults.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +51,11 @@ const router = createRouter({
       path: '/recommended',
       name: 'recommended',
       component: Recommended,
+    },
+    {
+      path: '/searchResults',
+      name: 'searchResults',
+      component: SearchResults,
     },
   ],
 })

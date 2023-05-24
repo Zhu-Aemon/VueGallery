@@ -44,7 +44,6 @@ function createWindow() {
   )
 
   // 打开开发工具
-  // mainWindow.webContents.openDevTools()
 }
 
 // Get the absolute path of app.js
@@ -54,6 +53,17 @@ const apiPath = isPackaged
   : path.join(__dirname, '..', 'netease-cloud-music-api', 'app.js')
 
 console.log(apiPath)
+
+let node_path = ''
+if (os.platform() === 'darwin') {
+  node_path = isPackaged
+  ? path.join(process.resourcesPath, 'bin_darwin', 'node')
+    : path.join(__dirname, '..', 'bin_darwin', 'node')
+} else {
+  node_path = isPackaged
+  ? path.join(process.resourcesPath, 'bin_win32', 'node')
+    : path.join(__dirname, '..', 'bin_win32', 'node')
+}
 
 // Check if the port is open and kill the process if necessary
 const port = 3000
@@ -91,7 +101,7 @@ checkPort.stdout.on('data', (data) => {
 
 checkPort.on('close', () => {
   // Run the command using the absolute path of app.js
-  const apiProcess = exec(`node ${apiPath}`)
+  const apiProcess = exec(`${node_path} ${apiPath}`)
 
   apiProcess.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`)

@@ -1,10 +1,10 @@
 {
   "name": "gallery",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "main": "electron/main.js",
   "private": true,
   "build": {
-    "appId": "com.your-website.gallery",
+    "appId": "com.sersmile.gallery",
     "productName": "Gallery",
     "copyright": "Copyright © 2023 sersmile",
     "mac": {
@@ -20,7 +20,8 @@
       "electron/**/*"
     ],
     "extraResources": [
-      "netease-cloud-music-api"
+      "netease-cloud-music-api",
+      "bin_darwin"
     ],
     "directories": {
       "buildResources": "assets",

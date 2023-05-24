@@ -123,8 +123,14 @@ const getSongs = async () => {
   songs.value = response.data.songs
 }
 
-onMounted(() => {
-  getSongs()
+onMounted(async () => {
+  await getSongs()
+
+  if (createTime.value === '0') {
+    await axios.get(`http://localhost:3000/playlist/detail?id=${playlistId.value}`).then((response) => {
+      createTime.value = response.data.playlist.createTime
+    })
+  }
 })
 
 const songDblClickedPlaylist = (song) => {

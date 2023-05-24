@@ -161,6 +161,7 @@
             data-tooltip-target="tooltip-restart"
             type="button"
             @click="loopSong"
+            v-if="false"
           >
             <svg
               aria-hidden="true"
@@ -176,14 +177,24 @@
             </svg>
             <span class="sr-only">Loop Song</span>
           </button>
-          <div
-            id="tooltip-restart"
-            class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
-            role="tooltip"
+          <button
+            class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
+            type="button"
+            v-if="!songLiked"
+            @click="likeMusic"
           >
-            Loop Song
-            <div class="tooltip-arrow" data-popper-arrow></div>
-          </div>
+            <i class="fa-regular fa-heart fa-lg"></i>
+          </button>
+          <!-- ?liked button-->
+          <button
+            class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
+            data-tooltip-target="tooltip-captions"
+            type="button"
+            v-if="songLiked"
+            @click="cancelLike"
+          >
+            <i class="fa-solid fa-heart fa-lg"></i>
+          </button>
         </div>
         <!-- ProgressBar Component-->
         <div class="flex items-center justify-between space-x-2">
@@ -204,25 +215,6 @@
     </div>
     <!-- 4 right buttons-->
     <div class="items-center justify-center hidden ml-auto md:flex">
-      <!-- LIKE Button-->
-      <button
-        class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
-        type="button"
-        v-if="!songLiked"
-        @click="likeMusic"
-      >
-        <i class="fa-regular fa-heart fa-lg"></i>
-      </button>
-      <!-- ?liked button-->
-      <button
-        class="p-2.5 group rounded-full hover:bg-gray-100 mr-1 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-600 dark:hover:bg-gray-600"
-        data-tooltip-target="tooltip-captions"
-        type="button"
-        v-if="songLiked"
-        @click="cancelLike"
-      >
-        <i class="fa-solid fa-heart fa-lg"></i>
-      </button>
       <div
         id="tooltip-captions"
         class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
