@@ -193,12 +193,16 @@ const navigateToExplore = () => {
   if (userId.value === 0) {
     store.commit('setLoginState', false)
   }
+	console.log(loggedIn.value)
+	console.log(typeof loggedIn.value)
   if (loggedIn.value === 'false') {
     // console.log('?')
     router.push({ name: 'login' })
     // console.log('push to login!')
+  } else if (loggedIn.value === false) {
+	  router.push({ name: 'login' })
   } else {
-    router.push({ name: 'explorePage' })
+	  router.push({ name: 'explorePage' })
   }
 }
 
