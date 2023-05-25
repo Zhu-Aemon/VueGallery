@@ -2,31 +2,104 @@ import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import axios from 'axios'
 
+const state = {
+  showWelcomePage: true,
+  folderName: [],
+  songs: [],
+  playing: false,
+  currentSong: '',
+  currentDuration: 180,
+  currentSongName: '',
+  currentSongAlbum: '',
+  currentSongArtist: '',
+  shuffle: 'loop',
+  volume: 100,
+  searchContent: '',
+  componentKey: 0,
+  userLoggedIn: false,
+  userId: 0,
+  userName: '',
+  userAvatar: '',
+  createTime: '',
+  userCookie: '',
+  playLocal: true,
+  neteaseList: [],
+  exploreSection: '',
+}
+
+const showWelcomePage = localStorage.getItem('showWelcomePage')
+if (showWelcomePage) {
+  state.showWelcomePage = showWelcomePage
+  console.log(showWelcomePage)
+}
+
+const songs = localStorage.getItem('songs')
+if (songs) {
+  state.songs = songs
+}
+
+// const playing = localStorage.getItem('playing')
+// if (playing) {
+//   state.playing = playing
+// }
+
+const currentSong = localStorage.getItem('currentSong')
+if (currentSong) {
+  state.currentSong = currentSong
+}
+
+const currentDuration = localStorage.getItem('currentDuration')
+if (currentDuration) {
+  state.currentDuration = currentDuration
+}
+
+const currentSongName = localStorage.getItem('currentSongName')
+if (currentSongName) {
+  state.currentSongName = currentSongName
+}
+
+const currentSongAlbum = localStorage.getItem('currentSongAlbum')
+if (currentSongAlbum) {
+  state.currentSongAlbum = currentSongAlbum
+}
+
+const currentSongArtist = localStorage.getItem('currentSongArtist')
+if (currentSongArtist) {
+  state.currentSongArtist = currentSongArtist
+}
+
+const userLoggedIn = localStorage.getItem('userLoggedIn')
+if (userLoggedIn) {
+  state.userLoggedIn = userLoggedIn
+}
+
+const userId = localStorage.getItem('userId')
+if (userId) {
+  state.userId = userId
+}
+
+const userName = localStorage.getItem('userName')
+if (userName) {
+  state.userName = userName
+}
+
+const userAvatar = localStorage.getItem('userAvatar')
+if (userAvatar) {
+  state.userAvatar = userAvatar
+}
+
+const createTime = localStorage.getItem('createTime')
+if (createTime) {
+  state.createTime = createTime
+}
+
+const userCookie = localStorage.getItem('userCookie')
+if (userCookie) {
+  state.userCookie = userCookie
+}
+
 const store = createStore({
-  state: {
-    showWelcomePage: true,
-    folderName: [],
-    songs: [],
-    playing: false,
-    currentSong: '',
-    currentDuration: 180,
-    currentSongName: '',
-    currentSongAlbum: '',
-    currentSongArtist: '',
-    shuffle: 'loop',
-    volume: 100,
-    searchContent: '',
-    componentKey: 0,
-    userLoggedIn: false,
-    userId: 0,
-    userName: '',
-    userAvatar: '',
-    createTime: '',
-    userCookie: '',
-    playLocal: true,
-    neteaseList: [],
-    exploreSection: '',
-  },
+  state: state,
   mutations: {
     addFolderName(state, folderName) {
       if (!state.folderName.includes(folderName)) {
@@ -35,6 +108,7 @@ const store = createStore({
     },
     setSongs(state, songs) {
       state.songs = songs
+      localStorage.setItem('songs', songs)
     },
     togglePlayState(state) {
       state.playing = !state.playing
@@ -42,6 +116,7 @@ const store = createStore({
     setCurrentSong(state, currentSong) {
       // console.log('set current!')
       state.currentSong = currentSong
+      localStorage.setItem('currentSong', currentSong)
       let url = ''
       if (state.playLocal) {
         url = `file://${currentSong.path}`
@@ -51,12 +126,14 @@ const store = createStore({
           volume: state.volume / 100,
           onload: () => {
             state.currentDuration = howl.duration()
+            localStorage.setItem('currentDuration', state.currentDuration)
             console.log(state.currentDuration)
           },
         })
       } else {
         url = getPlayUrl(currentSong.id)
         state.currentDuration = currentSong.dt / 1000
+        localStorage.setItem('currentDuration', state.currentDuration)
       }
     },
     stopPlay(state) {
@@ -69,6 +146,9 @@ const store = createStore({
       state.currentSongName = name
       state.currentSongAlbum = album
       state.currentSongArtist = artist
+      localStorage.setItem('currentSongName', name)
+      localStorage.setItem('currentSongAlbum', album)
+      localStorage.setItem('currentSongArtist', artist)
       // console.log('commited data:', name, album, artist)
     },
     setShuffle(state, shuffle) {
@@ -85,21 +165,27 @@ const store = createStore({
     },
     setLoginState(state, loginState) {
       state.userLoggedIn = loginState
+      localStorage.setItem('userLoggedIn', loginState)
     },
     setUserId(state, userId) {
       state.userId = userId
+      localStorage.setItem('userId', userId)
     },
     setUserName(state, username) {
       state.userName = username
+      localStorage.setItem('userName', username)
     },
     setUserAvatar(state, url) {
       state.userAvatar = url
+      localStorage.setItem('userAvatar', url)
     },
     setCreateTime(state, timestamp) {
       state.createTime = timestamp
+      localStorage.setItem('createTime', timestamp)
     },
     setUserCookie(state, cookie) {
       state.userCookie = cookie
+      localStorage.setItem('userCookie', cookie)
     },
     setPlayLocal(state, playLocal) {
       state.playLocal = playLocal
@@ -117,7 +203,7 @@ const store = createStore({
   getters: {
     // your getters here
   },
-  plugins: [createPersistedState()],
+  // plugins: [createPersistedState()],
 })
 
 const getPlayUrl = async (id) => {

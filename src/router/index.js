@@ -28,7 +28,7 @@ const router = createRouter({
       component: AlbumPage,
     },
     {
-      path: '/',
+      path: '/explore',
       name: 'explorePage',
       component: ExplorePage,
     },

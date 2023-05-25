@@ -71,15 +71,32 @@ const command = process.platform === 'win32' ? 'netstat' : 'lsof'
 const args =
   process.platform === 'win32' ? ['-a', '-n', '-o'] : ['-i', `:${port}`]
 
+// console.log(command, args)
+
 const checkPort = spawn(command, args)
 
 checkPort.stdout.on('data', (data) => {
   const output = data.toString()
-  const regex = new RegExp(`:${port}.*?LISTENING.*?(\\d+)`, 'g')
+  console.log(output)
+  let regex
+  if (os.platform() === 'win32') {
+    regex = new RegExp(`:${port}.*?LISTENING.*?(\\d+)`, 'g')
+  } else if (os.platform() === 'darwin') {
+    regex = new RegExp(`\\b\\d+\\b`, 'g')
+  }
   let match
 
+  // console.log(regex.exec(output))
+  // console.log((match = regex.exec(output)) !== null)
+
   while ((match = regex.exec(output)) !== null) {
-    const pid = match[1]
+    let pid
+    if (os.platform() === 'win32') {
+      pid = match[1]
+    } else if (os.platform() === 'darwin') {
+      pid = match[0]
+      console.log(pid)
+    }
 
     if (pid === '0') {
       console.log('Skipping process with PID 0.')
@@ -88,6 +105,8 @@ checkPort.stdout.on('data', (data) => {
 
     const killCommand =
       process.platform === 'win32' ? `taskkill /PID ${pid} /F` : `kill ${pid}`
+
+     console.log(killCommand)
 
     exec(killCommand, (err, stdout, stderr) => {
       if (err) {

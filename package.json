@@ -8,7 +8,11 @@
     "productName": "Gallery",
     "copyright": "Copyright © 2023 sersmile",
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "icon": "src/assets/gallery.icns"
+    },
+    "win": {
+      "icon": "src/assets/gallery.ico"
     },
     "nsis": {
       "oneClick": false,
@@ -21,7 +25,8 @@
     ],
     "extraResources": [
       "netease-cloud-music-api",
-      "bin_darwin"
+      "bin_darwin",
+      "bin_win32"
     ],
     "directories": {
       "buildResources": "assets",
