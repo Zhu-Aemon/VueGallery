@@ -7,9 +7,11 @@ import axios from 'axios'
 const playing = computed(() => store.state.playing)
 const currentSong = computed(() => store.state.currentSong)
 const volume = computed(() => store.state.volume)
+const userCookie = computed(() => store.state.userCookie)
+const soundQuality = computed(() => store.state.defaultQuality)
+
 const emit = defineEmits(['song-end'])
 let currentHowl = null
-const userCookie = computed(() => store.state.userCookie)
 
 watch(playing, (newValue, oldValue) => {
   if (newValue === true) {
@@ -34,15 +36,27 @@ const pauseMusic = () => {
 }
 
 watch(currentSong, async (newValue, oldValue) => {
-  // console.log('old value is ', oldValue)
-  // console.log('currentSong changed to', newValue)
-  let url = ''
-  if (store.state.playLocal) {
-    url = `file://${newValue.path}`
-  } else {
-    url = await getPlayUrl(newValue.id)
-    // console.log(url)
+  await ReplaySong()
+})
+
+const getPlayUrl = async (id) => {
+  const cookie = userCookie.value
+  const response = await axios({
+    url: `http://localhost:3000/song/url/v1?id=${id}&level=${soundQuality.value}`,
+    method: 'post',
+    data: {
+      cookie,
+    },
+  })
+  // console.log(response)
+  if (response.data.data[0].level !== soundQuality.value) {
+    store.commit('setQuality', response.data.data[0].level)
   }
+  return response.data.data[0].url
+}
+
+const ReplaySong = async () => {
+  let url = await getPlayUrl(currentSong.value.id)
   const howl = new Howl({
     src: [url],
     html5: true,
@@ -55,26 +69,13 @@ watch(currentSong, async (newValue, oldValue) => {
     },
   })
   if (currentHowl && currentHowl.playing()) {
-    // console.log('pause music and play', newValue)
     pauseMusic()
     currentHowl = howl
     playMusic()
   } else {
-    // console.log('play new music', newValue)
     currentHowl = howl
     playMusic()
   }
-})
-
-const getPlayUrl = async (id) => {
-  const cookie = userCookie.value
-  const response = await axios({
-    url: `http://localhost:3000/song/url?id=${id}`,
-    method: 'post',
-    data: {
-      cookie,
-    },
-  })
-  // console.log(response)
-  return response.data.data[0].url
 }
+
+EventBus.on('replay', ReplaySong)

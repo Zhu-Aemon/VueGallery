@@ -1,5 +1,4 @@
 import { createStore } from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
 import axios from 'axios'
 
 const state = {
@@ -25,6 +24,8 @@ const state = {
   playLocal: true,
   neteaseList: [],
   exploreSection: '',
+  defaultQuality: 'jymaster',
+  qualitySetting: 'jymaster',
 }
 
 const showWelcomePage = localStorage.getItem('showWelcomePage')
@@ -96,6 +97,11 @@ if (createTime) {
 const userCookie = localStorage.getItem('userCookie')
 if (userCookie) {
   state.userCookie = userCookie
+}
+
+const defaultQuality = localStorage.getItem('defaultQuality')
+if (defaultQuality) {
+  state.defaultQuality = defaultQuality
 }
 
 const store = createStore({
@@ -196,6 +202,13 @@ const store = createStore({
     setSection(state, section) {
       state.exploreSection = section
     },
+    setQuality(state, quality) {
+      state.defaultQuality = quality
+    },
+    setQualitySetting(state, quality) {
+      state.defaultQuality = quality
+      localStorage.setItem('defaultQuality', quality)
+    }
   },
   actions: {
     // your actions here
@@ -203,7 +216,6 @@ const store = createStore({
   getters: {
     // your getters here
   },
-  // plugins: [createPersistedState()],
 })
 
 const getPlayUrl = async (id) => {

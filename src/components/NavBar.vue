@@ -193,8 +193,8 @@ const navigateToExplore = () => {
   if (userId.value === 0) {
     store.commit('setLoginState', false)
   }
-	console.log(loggedIn.value)
-	console.log(typeof loggedIn.value)
+	// console.log(loggedIn.value)
+	// console.log(typeof loggedIn.value)
   if (loggedIn.value === 'false') {
     // console.log('?')
     router.push({ name: 'login' })
@@ -225,4 +225,6 @@ const navigateToTrending = () => {
 const navigateToRecommended = () => {
   router.push({ name: 'recommended'})
 }
+
+
 </script>
