@@ -99,9 +99,9 @@ if (userCookie) {
   state.userCookie = userCookie
 }
 
-const defaultQuality = localStorage.getItem('defaultQuality')
-if (defaultQuality) {
-  state.defaultQuality = defaultQuality
+const qualitySetting = localStorage.getItem('qualitySetting')
+if (qualitySetting) {
+  state.qualitySetting = qualitySetting
 }
 
 const store = createStore({
@@ -206,8 +206,8 @@ const store = createStore({
       state.defaultQuality = quality
     },
     setQualitySetting(state, quality) {
-      state.defaultQuality = quality
-      localStorage.setItem('defaultQuality', quality)
+      state.qualitySetting = quality
+      localStorage.setItem('qualitySetting', quality)
     }
   },
   actions: {

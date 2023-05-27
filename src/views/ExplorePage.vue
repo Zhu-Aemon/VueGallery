@@ -191,7 +191,8 @@
           "
 				/>
 				<div class="ml-2 mt-0.5 font-bold text-base select-none">
-					{{ pl.name }}
+					<span>{{ `${pl.name} ` }}</span>
+					<span v-if="pl.privacy === 10"><i class="fa-solid fa-lock"></i></span>
 				</div>
 				<div class="ml-2 font-medium text-sm text-gray-500 select-none">
 					by {{ pl.creator.nickname }}
@@ -213,7 +214,10 @@
           "
 				/>
 				<div class="ml-2 mt-0.5 font-bold text-base select-none">
-					{{ pl.name }}
+					{{ `${pl.name} ` }}
+					<span v-if="pl.privacy === 10">
+						<i class="fa-solid fa-lock"></i>
+					</span>
 				</div>
 				<div class="ml-2 font-medium text-sm text-gray-500 select-none">
 					by {{ pl.creator.nickname }}
@@ -374,14 +378,14 @@ const showAlbum = (album) => {
 const getUserPlayList = async () => {
 	const cookie = userCookie.value
 	const response = await axios({
-		url: `http://localhost:3000/user/playlist?uid=${userId.value}`,
+		url: `http://localhost:3000/user/playlist?uid=${userId.value}&timestamp=${Date.now()}`,
 		method: 'post',
 		data: {
 			cookie,
 		},
 	})
 	playlist.value = response.data.playlist
-	console.log(response.data)
+	// console.log(response.data)
 }
 
 const showPlaylist = (playlistId, nickname, createTime, cover, name) => {

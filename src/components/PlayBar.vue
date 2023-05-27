@@ -18,7 +18,7 @@
             <span class="font-medium text-gray-900 dark:text-white">{{
 		            title
 	            }}</span>
-						<span class="inline-block bg-blue-100 py-1 px-2 rounded-xl ml-2">
+						<span class="inline-block bg-blue-100 py-1 px-2 rounded-xl ml-2 select-none">
 							{{'🔥'.repeat(getSongPopularity())}}
 						</span>
 					</div>
@@ -232,7 +232,7 @@
 				v-if="isVIPSong"
 			>
 				<span class="relative inline-block py-1 px-2 bg-blue-100 text-sm font-medium rounded-xl">
-					<span>VIP歌曲</span>
+					<span class="select-none">VIP歌曲</span>
 				</span>
 			</div>
 			<div

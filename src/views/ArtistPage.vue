@@ -41,7 +41,7 @@
               class="bg-white border-gray-700 w-3/4 max-h-96 mx-auto rounded-lg drop-shadow-lg p-6 overflow-y-auto custom-scrollbar"
               @click.stop
             >
-              <p class="font-bold text-2xl">{{ artistDetail.name }}</p>
+              <p class="font-bold text-2xl text-black">{{ artistDetail.name }}</p>
               <p class="font-medium text-2xs mt-3">
                 {{ artistDetail.briefDesc }}
               </p>
@@ -154,6 +154,7 @@ const router = useRouter()
 const store = useStore()
 
 let resizeObserver = null
+
 let artistData = ref({})
 let artistDetail = ref({})
 let artistSongs = ref([])

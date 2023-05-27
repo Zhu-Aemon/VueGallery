@@ -11,19 +11,61 @@
               class="font-extrabold text-4xl text-black dark:text-white ml-12"
               >{{ playlistName }}</span
             >
+	          <span class="font-medium inline-block ml-4 text-black py-1 px-2 bg-blue-100 rounded-xl select-none"
+	                v-if="privacy === 10"
+	          >
+		          隐私歌单
+	          </span>
           </div>
           <div class="ml-12 text-2xs text-black">
             <span class="font-medium">{{ `PlayList by ` }}</span>
             <span class="font-bold">{{ creator || '' }}</span>
+	          <span class="font-medium ml-4 inline-block py-1 px-2 bg-gray-100 rounded-xl select-none cursor-pointer" v-if="subscribed && creatorId !== userId" @click="cancelSub">取消收藏</span>
+	          <span class="font-medium ml-4 inline-block py-1 px-2 bg-gray-100 rounded-xl select-none cursor-pointer" v-if="!subscribed && creatorId !== userId" @click="sub">收藏</span>
           </div>
           <div class="font-medium ml-12 mt-1 text-sm text-black">
             <span v-if="trackNumber > 1">{{
-              `${formatDate(Number(createTime)) || ''} · ${trackNumber} Songs `
+              `${formatDate(Number(createTime)) || ''} · ${trackNumber} 首 · ${playCount} 播放`
             }}</span>
             <span v-else>{{
-              `${formatDate(Number(createTime)) || ''} · 1 Song `
+              `${formatDate(Number(createTime)) || ''} · 1 首 · ${playCount} 播放`
             }}</span>
           </div>
+	        <div class="ml-12 mt-2 text-black font-medium max-h-limited overflow-hidden"
+	             ref="playlistDescElement"
+	        >
+		        {{desc}}
+	        </div>
+	        <button
+		        v-if="isTruncated"
+		        ref="expandButton"
+		        class="ellipsis-below font-medium text-sm cursor-pointer ml-12 text-gray-500 hover:text-blue-600 hover:underline"
+		        type="button"
+		        @click="toggleFullDesc"
+	        >
+		        Click To Expand
+	        </button>
+	        <div
+		        v-show="showPopup"
+		        class="fixed z-10 left-0 top-0 w-full h-full flex items-center justify-center"
+		        @click="toggleFullDesc"
+	        >
+		        <div
+			        class="bg-white border-gray-700 w-3/4 max-h-96 mx-auto rounded-lg drop-shadow-lg p-6 overflow-y-auto custom-scrollbar"
+			        @click.stop
+		        >
+			        <p class="font-bold text-2xl text-black">{{ playlistName }}</p>
+			        <p class="font-medium text-2xs mt-3">
+				        {{ desc }}
+			        </p>
+			        <button
+				        class="mt-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+				        @click="toggleFullDesc"
+			        >
+				        Close
+			        </button>
+		        </div>
+	        </div>
         </div>
       </li>
     </div>
@@ -91,7 +133,7 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { computed, ref, onMounted } from 'vue'
+import {computed, ref, onMounted, onBeforeUnmount} from 'vue'
 import { useStore } from 'vuex'
 import axios from 'axios'
 import { formatDate } from '../utils/timeParse'
@@ -100,16 +142,26 @@ const router = useRouter()
 const route = useRoute()
 const store = useStore()
 
+let resizeObserver = null
+
 const playlistId = ref(route.query.id)
 const creator = ref(route.query.creator)
 const createTime = ref(route.query.createTime)
 const coverUrl = ref(route.query.cover)
 const playlistName = ref(route.query.name)
-
+const privacy = ref(0)
 const songs = ref(null)
-const trackNumber = computed(() => songs?.value?.length || 0)
+const desc = ref('')
+const playCount = ref(0)
+const subscribed = ref(false)
+const playlistDescElement = ref(null)
+const showPopup = ref(false)
+const creatorId = ref(0)
+let isTruncated = ref(false)
 
+const trackNumber = computed(() => songs?.value?.length || 0)
 const userCookie = computed(() => store.state.userCookie)
+const userId = computed(() => store.state.userId)
 
 const getSongs = async () => {
   const cookie = userCookie.value
@@ -121,6 +173,21 @@ const getSongs = async () => {
     },
   })
   songs.value = response.data.songs
+
+	const privacyRes = await axios({
+		url: `http://localhost:3000/playlist/detail?id=${playlistId.value}&timestamp=${Date.now()}`,
+		method: 'post',
+		data: {
+			cookie
+		}
+	})
+
+	privacy.value = privacyRes.data.playlist.privacy
+	desc.value = privacyRes.data.playlist.description
+	playCount.value = privacyRes.data.playlist.playCount
+	subscribed.value = privacyRes.data.playlist.subscribed
+	creatorId.value = privacyRes.data.playlist.creator.userId
+	console.log(privacyRes.data)
 }
 
 onMounted(async () => {
@@ -131,7 +198,40 @@ onMounted(async () => {
       createTime.value = response.data.playlist.createTime
     })
   }
+
+	if (!('ResizeObserver' in window)) return
+
+	checkIfTruncated()
+	resizeObserver = new ResizeObserver(() => {
+		checkIfTruncated()
+	})
+	resizeObserver.observe(playlistDescElement.value)
 })
+
+onBeforeUnmount(() => {
+	if (resizeObserver) {
+		resizeObserver.disconnect()
+	}
+})
+
+function checkIfTruncated() {
+	if (!playlistDescElement.value) return
+
+	isTruncated.value =
+		playlistDescElement.value.scrollHeight > playlistDescElement.value.clientHeight
+	// console.log(isTruncated.value)
+}
+
+const toggleFullDesc = () => {
+	showPopup.value = !showPopup.value
+	if (showPopup.value) {
+		document.body.classList.add('overflow-hidden')
+		// console.log('added!')
+	} else {
+		document.body.classList.remove('overflow-hidden')
+		// console.log('removed!')
+	}
+}
 
 const songDblClickedPlaylist = (song) => {
   store.commit('setPlayLocal', false)
@@ -166,4 +266,58 @@ const showAlbum = (album) => {
     },
   })
 }
+
+const cancelSub = async () => {
+	const cookie = userCookie.value
+	await axios({
+		url: `http://localhost:3000/playlist/subscribe?t=2&id=${playlistId.value}&timestamp=${Date.now()}`,
+		method: 'post',
+		data: {
+			cookie
+		}
+	})
+	await getSongs()
+}
+
+const sub = async () => {
+	const cookie = userCookie.value
+	await axios({
+		url: `http://localhost:3000/playlist/subscribe?t=1&id=${playlistId.value}&timestamp=${Date.now()}`,
+		method: 'post',
+		data: {
+			cookie
+		}
+	})
+	await getSongs()
+}
 </script>
+
+<style scoped>
+.ellipsis-below {
+	display: inline-block;
+	/*padding-left: 0.25rem;*/
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+	width: 0.5rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+	background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 1rem;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Firefox scrollbar styles */
+.custom-scrollbar {
+	scrollbar-width: thin;
+	scrollbar-color: #888 #f1f1f1;
+}
+</style>
