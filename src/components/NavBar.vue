@@ -42,7 +42,6 @@
               fill-rule="evenodd"
             ></path>
           </svg>
-          <span class="sr-only">Search</span>
         </button>
         <div class="relative hidden md:block">
           <div
@@ -61,7 +60,6 @@
                 fill-rule="evenodd"
               ></path>
             </svg>
-            <span class="sr-only">Search icon</span>
           </div>
           <input
             id="search-navbar"
@@ -163,6 +161,19 @@
             >为你推荐</a
             >
           </li>
+	        <li>
+		        <a
+			        :class="
+                $route.name === 'settings'
+                  ? 'select-none text-blue-600 inline-block bg-gray-100 px-2 rounded-xl py-1 cursor-pointer'
+                  : 'select-none text-black inline-block hover:bg-gray-100 hover:rounded-xl px-2 py-1 cursor-pointer'
+              "
+			        @click="navigateToSettings"
+		        >
+			        <i class="fa-solid fa-gear fa-lg"></i>
+		        </a
+		        >
+	        </li>
         </ul>
       </div>
     </div>
@@ -226,5 +237,7 @@ const navigateToRecommended = () => {
   router.push({ name: 'recommended'})
 }
 
-
+const navigateToSettings = () => {
+	router.push({ name: 'settings'})
+}
 </script>
