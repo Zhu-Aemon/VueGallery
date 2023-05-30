@@ -276,7 +276,7 @@
 
 <script setup>
 import {useStore} from 'vuex'
-import {computed, onMounted, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch, defineEmits} from 'vue'
 import formatTime from '../utils/timeParse'
 import EventBus from '@/utils/eventBus'
 import axios from 'axios'
@@ -450,8 +450,9 @@ onMounted(async () => {
 })
 
 const songEnd = () => {
-	// console.log('end!')
+	console.log('end!')
 	if (intervalId !== null) {
+		console.log('clear interval!')
 		clearInterval(intervalId)
 	}
 	playNext()
@@ -561,16 +562,18 @@ const StartPlaySong = async () => {
 	})
 	const coverImg = document.getElementById('cover')
 	coverImg.src = currentSong.value.al.picUrl
+
+	if (intervalId !== null) {
+		clearInterval(intervalId)
+	}
+	if (playing.value === true) {
+		intervalId = setInterval(() => {
+			progressTime.value += 1
+			// console.log(progressTime.value)
+		}, 1000)
+	}
 }
-if (intervalId !== null) {
-	clearInterval(intervalId)
-}
-if (playing.value === true) {
-	intervalId = setInterval(() => {
-		progressTime.value += 1
-		// console.log(progressTime.value)
-	}, 1000)
-}
+
 
 const getSongPopularity = () => {
 	const popularityIndex = songPopularity.value / 2

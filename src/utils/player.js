@@ -66,6 +66,7 @@ const ReplaySong = async () => {
     },
     onend: () => {
       EventBus.emit('song-end')
+      console.log('song ends!')
     },
   })
   if (currentHowl && currentHowl.playing()) {
